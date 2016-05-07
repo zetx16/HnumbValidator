@@ -1,0 +1,23 @@
+IMG {
+	vertical-align:middle;
+	border:0;
+}
+TR.clr {
+	background: #eee
+}
+TD {
+    font: 13px/16px tahoma, Arial, Helvetica, sans-serif;
+	padding: 0px 7px
+}
+BODY {
+    font: 14px/16px tahoma, Arial, Helvetica, sans-serif;
+}
+A{
+	text-decoration: none;
+}
+A:hover {
+    text-decoration: underline;
+}
+A:visited { 
+	color: mediumblue; 
+}

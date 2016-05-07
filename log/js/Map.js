@@ -1,0 +1,53 @@
+function open_josm(x) { document.getElementById('josm').src='http://127.0.0.1:8111/load_object?objects='+x; }
+
+var map = L.map('map');
+var hash = new L.Hash(map);
+
+var iErr = L.divIcon({ 
+	className: 'icon-err',
+	iconSize: new L.Point(10, 10)
+});
+var iWarn = L.divIcon({ 
+	className: 'icon-warn',
+	iconSize: new L.Point(10, 10)
+});
+
+L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 18,
+	id: 'mapbox.streets'
+}).addTo(map);
+
+var markerCluster = new L.MarkerClusterGroup({
+  maxClusterRadius: 50,
+  disableClusteringAtZoom: 13,
+  showCoverageOnHover: false, 
+  spiderfyOnMaxZoom: false,
+  zoomToBoundsOnClick: false
+});
+
+var info = L.control({position: 'bottomright'});
+info.onAdd = function (map) {
+	var div = L.DomUtil.create('div', 'info');
+	div.innerHTML = "<img height=35 width=35 src=info.png>";
+	div.setAttribute("onmouseenter", "showDisclaimer()");
+	div.setAttribute("onmouseleave", "hideDisclaimer()");
+	div.id = 'info';
+	return div;
+};
+info.addTo(map);
+
+function hideDisclaimer() 
+{ 
+	var div = document.getElementById("info"); 
+	div.innerHTML = "<img height=35 width=35 src=info.png>"; 
+}
+
+markerCluster.on('clusterclick', function(clickdata){
+	var arr = clickdata.layer.getAllChildMarkers();
+	var result = "";
+	for (var i=0; i<arr.length; i++) {
+		if (i>0) result += ',';
+		result += arr[i].getPopup().getContent().match(/(?:w|n|r|way|node|relation)\d+/)[0];
+	}
+	clickdata.layer.bindPopup("<a href=\"http://127.0.0.1:8111/load_object?objects="+result+"\" onClick=\"open_josm("+result+");return false;\">Открыть кластер в Josm</a>");
+});
