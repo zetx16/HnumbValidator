@@ -158,13 +158,12 @@ namespace HouseNumberValidator
                 validators.Find( x => x is ValidatorNames ).Errors.Count
                 );
 
-            Reports.Edit( new RegionalReport( region,
+            Reports.Edit( new RegionalReport( region, dateDump,
                 validators.Find( x => x is ValidatorHouseNumb ).Errors.Count,
                 validators.Find( x => x is ValidatorFlats ).Errors.Count,
                 validators.Find( x => x is ValidatorNoStreet ).Errors.Count,
                 validators.Find( x => x is ValidatorNames ).Errors.Count,
-                validators.Find( x => x is ValidatorDoubleTag ).Errors.Count,
-                dateDump
+                validators.Find( x => x is ValidatorDoubleTag ).Errors.Count
                 ) );
 
 

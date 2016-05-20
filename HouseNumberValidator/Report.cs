@@ -28,14 +28,21 @@ namespace HouseNumberValidator
 
         public DateTime Stamp;
         
-        public RegionalReport( string reg, int er, int flt, int str, int nm, int dbl, DateTime dt )
+        public RegionalReport( string reg, DateTime dt, int er, int flt, int str, int nm, int dbl )
         {
             Region      = reg;
+
             Errors      = er;
             Flats       = flt;
             NoStreet    = str;
             Names       = nm;
             Double      = dbl;
+
+            ErrorsOld   = -1;
+            FlatsOld    = -1;
+            NoStreetOld = -1;
+            NamesOld    = -1;
+            DoubleOld   = -1;
 
             Stamp       = dt;
         }

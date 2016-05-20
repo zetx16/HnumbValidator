@@ -61,7 +61,6 @@
     <Compile Include="GeoOperations.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="Options.cs" />
-    <Compile Include="Settings1.cs" />
     <Compile Include="StringExtension.cs" />
     <Compile Include="Validators\IListRportable.cs" />
     <Compile Include="Validators\IValidator.cs" />

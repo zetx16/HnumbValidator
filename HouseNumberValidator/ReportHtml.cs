@@ -9,9 +9,12 @@ namespace HouseNumberValidator
 {
     static class ReportHtml
     {
+        static string iconMap = @"<img border=0 width=16 height=16 src=icon_map.png alt='map' title='Показать на карте'>";
+
         public static void SaveIndexList()
         {
             string outFileName = "v.html";
+
             using ( StreamWriter fw = new StreamWriter( Paths.DirOut + outFileName, false, Encoding.UTF8 ) )
             {
                 fw.WriteLine( @"<html><head>" );
@@ -138,6 +141,27 @@ namespace HouseNumberValidator
                 fw.WriteLine( @"</body></html>" );
             }
             File.Copy( Paths.DirOut + outFileName, Paths.DirOut + "index.html", true );
+        }
+
+        private static string CreateIndexCell(string region, int value, int oldValuse, string file)
+        {
+            string result = "";
+
+            if ( value > 0 )
+                result += String.Format( @"<td><a href=""{2}"">{3}</a> <a href=""{0}"">{1}</a>",
+                    region + ( file == "errors" ? "" : ( "." + file ) ) + ".html",
+                    value > 0 ? value.ToString() : "",
+                    @"map/" + region + "." + file + ".map.html",
+                    iconMap
+                );
+            if ( value == 0 )
+                result += String.Format( @"<td>{0}", "<font color=\"gold\">★</font>" );
+            result += String.Format( @" <font color=""{1}"" size=""2.3"">{0}</font></td>",
+                oldValuse >= 0 && oldValuse != value ? String.Format( "{0}", ( value - oldValuse ).ToString( "+#;−#;0" ) ) : "",
+                value - oldValuse > 0 ? "red" : value - oldValuse < 0 ? "green" : "black"
+            );
+
+            return result;
         }
 
         public static void SaveList( IValidator validator, string region, DateTime dateDump )
