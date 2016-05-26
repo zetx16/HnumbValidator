@@ -7,14 +7,8 @@ using OsmSharp.Osm;
 
 namespace HouseNumberValidator
 {
-    class ValidatorNames: IValidator
+    class ValidatorNames: Validator
     {
-        string fileListEnd = ".names.html";
-        string fileMapEnd = ".names.map.html";
-
-        List<Error> errors;
-        public List<Error> Errors { get { return errors; } }
-
         List<string> keys = new List<string>{
 				"highway",
 				"amenity",
@@ -50,14 +44,11 @@ namespace HouseNumberValidator
                 { "train_station", "building" }
             };
 
-        string description;
-        public string DescriptionForList { get { return description; } }
-
-        string descriptionForMap;
-        public string DescriptionForMap { get { return descriptionForMap; } }
-
         public ValidatorNames()
         {
+            fileListEnd = ".names.html";
+            fileMapEnd = ".names.map.html";
+
             errors = new List<Error>();
 
             description = "Список объектов с тегом name, у которых нет ни одного из данных тегов: ";
@@ -82,7 +73,7 @@ namespace HouseNumberValidator
             descriptionForMap += ".<br>" + "Например: есть объект с name=\"Школа №2\", но нет тега amenity=school.<br>";
         }
 
-        public void ValidateObject(OsmGeo geo)
+        public override void ValidateObject(OsmGeo geo)
         {
             string value;
 
@@ -103,7 +94,7 @@ namespace HouseNumberValidator
             }
         }
 
-        public void ValidateEndReadFile()
+        public override void ValidateEndReadFile()
         {
             errors = errors.OrderBy( x => x.Value ).ToList();
         }
@@ -162,17 +153,7 @@ namespace HouseNumberValidator
             return false;
         }
 
-        public string GetPathList( string directory, string region )
-        {
-            return directory + region + fileListEnd;
-        }
-
-        public string GetPathMap( string directory, string region )
-        {
-            return directory + region + fileMapEnd;
-        }
-
-        public string[] GetTableHead()
+        public override string[] GetTableHead()
         {
             string[] result = new string[ 2 ];
             result[ 0 ] = "Ошибка";

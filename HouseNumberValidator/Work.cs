@@ -12,7 +12,7 @@ namespace HouseNumberValidator
 {
     class Work
     {
-        List<IValidator> validators;
+        List<Validator> validators;
 
         public void Validate()
         {
@@ -123,7 +123,7 @@ namespace HouseNumberValidator
 
         public void ReadPbfFile( FileInfo pbfile )
         {
-            validators = new List<IValidator>();
+            validators = new List<Validator>();
             validators.Add( new ValidatorHouseNumb() );
             validators.Add( new ValidatorFlats() );
             validators.Add( new ValidatorNoStreet() );

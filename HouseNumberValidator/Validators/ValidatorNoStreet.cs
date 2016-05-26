@@ -7,27 +7,19 @@ using OsmSharp.Osm;
 
 namespace HouseNumberValidator
 {
-    class ValidatorNoStreet: IValidator
+    class ValidatorNoStreet: Validator
     {
-        string fileListEnd = ".nostreet.html";
-        string fileMapEnd = ".nostreet.map.html";
-
-        List<Error> errors;
-        public List<Error> Errors { get { return errors; } }
-
-        string description = @"Список номеров домов без ""addr:street"" и ""addr:place""<br>";
-        public string DescriptionForList { get { return description; } }
-
-        string descriptionForMap = @"Адреса без ""addr:street"" и ""addr:place""<br><br>"
-            + @"<div class=""info-colour"" style=""background-color:orange;""></div> - есть ""addr:city"" или ""addr:suburb""<br>";
-        public string DescriptionForMap { get { return descriptionForMap; } }
-
         List<string> addrkeys;
-
 
         public ValidatorNoStreet()
         {
-            errors = new List<Error>(); 
+            fileListEnd = ".nostreet.html";
+            fileMapEnd = ".nostreet.map.html";
+            description = @"Список номеров домов без ""addr:street"" и ""addr:place""<br>";
+            descriptionForMap = @"Адреса без ""addr:street"" и ""addr:place""<br><br>"
+                        + @"<div class=""info-colour"" style=""background-color:orange;""></div> - есть ""addr:city"" или ""addr:suburb""<br>";
+
+            errors = new List<Error>();
             addrkeys = new List<string>{
 				"addr:street",
 				"addr:place",
@@ -37,7 +29,7 @@ namespace HouseNumberValidator
 			};
         }
 
-        public void ValidateObject(OsmGeo geo)
+        public override void ValidateObject( OsmGeo geo )
         {
             string value;
             if ( geo.Tags.TryGetValue( "addr:housenumber", out value ) && !geo.Tags.ContainsOneOfKeys( addrkeys ) )
@@ -61,23 +53,13 @@ namespace HouseNumberValidator
             }
         }
 
-        public void ValidateEndReadFile()
+        public override void ValidateEndReadFile()
         {
             errors = errors.Except( GeoOperations.members ).ToList();
             errors = errors.OrderByDescending( x => x.TimeStump ).OrderBy( x => x.Description ).ToList();
         }
 
-        public string GetPathList( string directory, string region )
-        {
-            return directory + region + fileListEnd;
-        }
-
-        public string GetPathMap( string directory, string region )
-        {
-            return directory + region + fileMapEnd;
-        }
-
-        public string[] GetTableHead()
+        public override string[] GetTableHead()
         {
             string[] result = new string[ 2 ];
             result[ 0 ] = "Ошибка";

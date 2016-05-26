@@ -7,25 +7,18 @@ using OsmSharp.Osm;
 
 namespace HouseNumberValidator
 {
-    public class ValidatorUnorrectTag : IValidator
+    public class ValidatorUnorrectTag : Validator
     {
-        string fileListEnd = ".uncorrect.html";
-        string fileMapEnd = ".uncorrect.map.html";
-
-        List<Error> errors;
-        public List<Error> Errors { get { return errors; } }
-
-        string description = "";
-        public string DescriptionForList { get { return description; } }
-
-        string descriptionForMap = "";
-        public string DescriptionForMap { get { return descriptionForMap; } }
-
         Dictionary<List<string>, Dictionary<string, string>> tags;
 
         public ValidatorUnorrectTag()
         {
             errors = new List<Error>();
+
+            fileListEnd = ".uncorrect.html";
+            fileMapEnd = ".uncorrect.map.html";
+            description = "";
+            descriptionForMap = "";
 
             tags = new Dictionary<List<string>, Dictionary<string, string>>
             {
@@ -183,7 +176,7 @@ namespace HouseNumberValidator
             };
         }
 
-        public void ValidateObject( OsmGeo geo )
+        public override void ValidateObject( OsmGeo geo )
         {
             if ( !geo.Tags.ContainsKey( "name" ) )
                 return;
@@ -206,22 +199,7 @@ namespace HouseNumberValidator
 
         }
 
-
-        public void ValidateEndReadFile()
-        {
-            errors = errors.OrderByDescending( x => x.TimeStump ).ToList();
-        }
-
-        public string GetPathList( string directory, string region )
-        {
-            return directory + region + fileListEnd;
-        }
-        public string GetPathMap( string directory, string region )
-        {
-            return directory + region + fileMapEnd;
-        }
-
-        public string[] GetTableHead()
+        public override string[] GetTableHead()
         {
             string[] result = new string[ 2 ];
             result[ 0 ] = "Ошибка";

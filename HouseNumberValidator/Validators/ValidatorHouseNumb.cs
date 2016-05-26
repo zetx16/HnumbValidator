@@ -8,26 +8,19 @@ using OsmSharp.Osm;
 
 namespace HouseNumberValidator
 {
-    public class ValidatorHouseNumb : IValidator
+    public class ValidatorHouseNumb : Validator
     {
-        string fileListEnd = ".html";
-        string fileMapEnd = ".errors.map.html";
-
-        List<Error> errors;
-        public List<Error> Errors { get { return errors; } }
-
-        string description = "";
-        public string DescriptionForList { get { return description; } }
-
-        string descriptionForMap = "";
-        public string DescriptionForMap { get { return descriptionForMap; } }
-
         public ValidatorHouseNumb()
         {
+            fileListEnd = ".html";
+            fileMapEnd = ".errors.map.html";
+            description = "";
+            descriptionForMap = "";
+
             errors = new List<Error>();
         }
 
-        public void ValidateObject(OsmGeo geo)
+        public override void ValidateObject( OsmGeo geo )
         {
             string value;
             for ( int i = 1; i <= 9; i++ )
@@ -57,10 +50,6 @@ namespace HouseNumberValidator
                     break;
             }
         }
-        public void ValidateEndReadFile()
-        {
-            errors = errors.OrderByDescending( x => x.TimeStump ).ToList();
-        }
 
         private bool ValidateHouseNumbOnWarn( Error hn )
         {
@@ -74,6 +63,7 @@ namespace HouseNumberValidator
 
             return true;
         }
+
         private bool ValidateHouseNumbOnError( Error hn )
         {
             if ( Regexes.CheckPattern( Regexes.numb, hn.Value ) )
@@ -192,16 +182,7 @@ namespace HouseNumberValidator
             return result;
         }
 
-        public string GetPathList( string directory, string region )
-        {
-            return directory + region + fileListEnd;
-        }
-        public string GetPathMap( string directory, string region )
-        {
-            return directory + region + fileMapEnd;
-        }
-
-        public string[] GetTableHead()
+        public override string[] GetTableHead()
         {
             string[] result = new string[ 2 ];
             result[ 0 ] = "Ошибка";

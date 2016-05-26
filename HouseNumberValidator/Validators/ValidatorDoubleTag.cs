@@ -8,28 +8,21 @@ using OsmSharp.Osm;
 
 namespace HouseNumberValidator
 {
-    class ValidatorDoubleTag : IValidator
+    class ValidatorDoubleTag : Validator
     {
-        string fileListEnd = ".double.html";
-        string fileMapEnd = ".double.map.html";
-
         List<Error> tempSchool;
         List<Error> tempKindergarten;
         List<string> ignoreWords;
 
-        List<Error> errors;
-        public List<Error> Errors { get { return errors; } }
-
-        string description = "Дублирования тега amenity=school и amenity=kindergarten, т.е. когда тег висит и на территории и на здании.";
-        public string DescriptionForList { get { return description; } }
-
-        string descriptionForMap = "Дублирования тега amenity=school и amenity=kindergarten, т.е. когда тег висит и на территории и на здании.<br><br>"
-            + @"<div class=""info-colour"" style=""background-color:#f60;""></div> - школы<br>"
-            + @"<div class=""info-colour"" style=""background-color:orange;""></div> - детские сады<br>";
-        public string DescriptionForMap { get { return descriptionForMap; } }
-
         public ValidatorDoubleTag()
         {
+            fileListEnd = ".double.html";
+            fileMapEnd = ".double.map.html";
+            description = "Дублирования тега amenity=school и amenity=kindergarten, т.е. когда тег висит и на территории и на здании.";
+            descriptionForMap = "Дублирования тега amenity=school и amenity=kindergarten, т.е. когда тег висит и на территории и на здании.<br><br>"
+                            + @"<div class=""info-colour"" style=""background-color:#f60;""></div> - школы<br>"
+                            + @"<div class=""info-colour"" style=""background-color:orange;""></div> - детские сады<br>";
+
             tempSchool = new List<Error>();
             tempKindergarten = new List<Error>();
             errors = new List<Error>();
@@ -41,7 +34,7 @@ namespace HouseNumberValidator
 			};
         }
 
-        public void ValidateObject(OsmGeo geo)
+        public override void ValidateObject( OsmGeo geo )
         {
             string value;
             if ( geo.Tags.ContainsKeyValue( "amenity", "school" ) )
@@ -62,7 +55,7 @@ namespace HouseNumberValidator
             }
         }
 
-        public void ValidateEndReadFile()
+        public override void ValidateEndReadFile()
         {
             ValidateSchool();
             ValidateKindergarten();
@@ -151,17 +144,7 @@ namespace HouseNumberValidator
             errors = errors.Distinct().ToList();
         }
 
-        public string GetPathList( string directory, string region )
-        {
-            return directory + region + fileListEnd;
-        }
-
-        public string GetPathMap( string directory, string region )
-        {
-            return directory + region + fileMapEnd;
-        }
-
-        public string[] GetTableHead()
+        public override string[] GetTableHead()
         {
             string[] result = new string[ 2 ];
             result[ 0 ] = "Ошибка";

@@ -164,7 +164,7 @@ namespace HouseNumberValidator
             return result;
         }
 
-        public static void SaveList( IValidator validator, string region, DateTime dateDump )
+        public static void SaveList( Validator validator, string region, DateTime dateDump )
         {
             if ( validator.Errors.Count == 0 ) return;
 
@@ -243,7 +243,7 @@ namespace HouseNumberValidator
             }
         }
 
-        public static void SaveMap( IValidator validator, string region )
+        public static void SaveMap( Validator validator, string region )
         {
             if ( validator.Errors.Count == 0 ) return;
 

@@ -7,28 +7,20 @@ using OsmSharp.Osm;
 
 namespace HouseNumberValidator
 {
-    class ValidatorFlats : IValidator
+    class ValidatorFlats : Validator
     {
-        string fileListEnd = ".flats.html";
-        string fileMapEnd = ".flats.map.html";
-
-        List<Error> errors;
-        public List<Error> Errors { get { return errors; } }
-
-        string description = "Не правильно обозначенные номера квартир в подъезде.<br>"
-                + "Правильный формат записи addr:flats=3-7;10;14;16-18<br>";
-        public string DescriptionForList { get { return description; } }
-
-        string descriptionForMap = "Не правильно обозначенные номера квартир в подъезде.<br>"
-                + "Правильный формат записи addr:flats=3-7;10;14;16-18<br>";
-        public string DescriptionForMap { get { return descriptionForMap; } }
-
         public ValidatorFlats()
         {
+            fileListEnd = ".flats.html";
+            fileMapEnd = ".flats.map.html";
+            description = "Не правильно обозначенные номера квартир в подъезде.<br>"
+                + "Правильный формат записи addr:flats=3-7;10;14;16-18<br>";
+            descriptionForMap = "Не правильно обозначенные номера квартир в подъезде.<br>"
+                + "Правильный формат записи addr:flats=3-7;10;14;16-18<br>";
             errors = new List<Error>();
         }
 
-        public void ValidateObject(OsmGeo geo)
+        public override void ValidateObject(OsmGeo geo)
         {
             string value;
             if ( geo.Tags.TryGetValue( "addr:flats", out value ) )
@@ -42,11 +34,6 @@ namespace HouseNumberValidator
             }
         }
 
-        public void ValidateEndReadFile()
-        {
-            errors = errors.OrderByDescending( x => x.TimeStump ).ToList();
-        }
-
         private bool ValidateFlats( Error hn )
         {
             if ( Regexes.CheckPattern( Regexes.flat, hn.Value ) )
@@ -58,17 +45,7 @@ namespace HouseNumberValidator
             return false;
         }
 
-        public string GetPathList( string directory, string region )
-        {
-            return directory + region + fileListEnd;
-        }
-
-        public string GetPathMap( string directory, string region )
-        {
-            return directory + region + fileMapEnd;
-        }
-
-        public string[] GetTableHead()
+        public override string[] GetTableHead()
         {
             string[] result = new string[ 2 ];
             result[ 0 ] = "Ошибка";
