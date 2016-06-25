@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,9 +17,10 @@ namespace HouseNumberValidator
 
         public ValidatorDoubleTag()
         {
-            fileListEnd = ".double.html";
-            fileMapEnd = ".double.map.html";
-            description = "Дублирования тега amenity=school и amenity=kindergarten, т.е. когда тег висит и на территории и на здании.";
+            ListableReport = false;
+            FileEnd = "double";
+            Title = "Дублирование";
+            descriptionForList = "Дублирования тега amenity=school и amenity=kindergarten, т.е. когда тег висит и на территории и на здании.";
             descriptionForMap = "Дублирования тега amenity=school и amenity=kindergarten, т.е. когда тег висит и на территории и на здании.<br><br>"
                             + @"<div class=""info-colour"" style=""background-color:#f60;""></div> - школы<br>"
                             + @"<div class=""info-colour"" style=""background-color:orange;""></div> - детские сады<br>";
@@ -43,14 +45,12 @@ namespace HouseNumberValidator
                 if ( ignoreWords.Any( x => value.ToLower().Contains( x ) ) )
                     return;
                 var school = new Error( geo, value );
-                GeoOperations.GetCoordinates( geo, school );
                 tempSchool.Add( school );
             }
             if ( geo.Tags.ContainsKeyValue( "amenity", "kindergarten" ) )
             {
                 geo.Tags.TryGetValue( "name", out value );
                 var kindergarten = new Error( geo, value, ErrorLevel.Level5 );
-                GeoOperations.GetCoordinates( geo, kindergarten );
                 tempKindergarten.Add( kindergarten );
             }
         }
@@ -79,7 +79,7 @@ namespace HouseNumberValidator
                         break;
                     if ( Math.Abs( tempSchool[ i ].lon - tempSchool[ j ].lon ) > square )
                         continue;
-                    var dist = GeoOperations.Distance( tempSchool[ i ], tempSchool[ j ] );
+                    var dist = GeoCollections.Distance( tempSchool[ i ], tempSchool[ j ] );
                     if ( dist > 200 )
                         continue;
 
@@ -119,7 +119,7 @@ namespace HouseNumberValidator
                         break;
                     if ( Math.Abs( tempKindergarten[ i ].lon - tempKindergarten[ j ].lon ) > square )
                         continue;
-                    var dist = GeoOperations.Distance( tempKindergarten[ i ], tempKindergarten[ j ] );
+                    var dist = GeoCollections.Distance( tempKindergarten[ i ], tempKindergarten[ j ] );
                     if ( dist > 200 )
                         continue;
 
@@ -142,27 +142,6 @@ namespace HouseNumberValidator
                 }
             }
             errors = errors.Distinct().ToList();
-        }
-
-        public override string[] GetTableHead()
-        {
-            string[] result = new string[ 2 ];
-            result[ 0 ] = "Ошибка";
-            result[ 1 ] = "Доп. информация";
-            return result;
-        }
-
-        public IEnumerable<string[]> GetTableTr()
-        {
-            string[] result = new string[ 3 ];
-
-            foreach ( var error in errors )
-            {
-                result[ 0 ] = String.Format( @"<a href=""http://127.0.0.1:8111/load_object?objects={0}{1}"" onClick=""open_josm('{0}{1}');return false;""><img src=icon_to_josm.png></a>", error.Type, error.Osmid );
-                result[ 1 ] = String.Format( @"<a href=""http://osm.org/{0}/{1}"">{2}</a>", error.Type, error.Osmid, error.Value );
-                result[ 2 ] = error.Description;
-                yield return result;
-            }
         }
     }
 }

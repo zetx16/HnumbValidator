@@ -58,12 +58,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GeoOperations.cs" />
+    <Compile Include="GeoCollections.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="StringExtension.cs" />
-    <Compile Include="Validators\IListReportable.cs" />
-    <Compile Include="Validators\IValidator.cs" />
     <Compile Include="GeoCoord.cs" />
     <Compile Include="Paths.cs" />
     <Compile Include="Program.cs" />
@@ -78,7 +76,8 @@
     <Compile Include="Validators\ValidatorNames.cs" />
     <Compile Include="Validators\ValidatorFlats.cs" />
     <Compile Include="Validators\ValidatorDoubleTag.cs" />
-    <Compile Include="Validators\ValidatorUnorrectTag.cs" />
+    <Compile Include="Validators\ValidatorOpeningDate.cs" />
+    <Compile Include="Validators\ValidatorUncorrectTag.cs" />
     <Compile Include="Work.cs" />
   </ItemGroup>
   <ItemGroup>

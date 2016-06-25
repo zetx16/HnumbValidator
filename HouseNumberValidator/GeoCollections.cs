@@ -7,24 +7,28 @@ using OsmSharp.Osm;
 
 namespace HouseNumberValidator
 {
-    static class GeoOperations
+    static class GeoCollections
     {
         public static List<Error> members;
-        public static List<NdCoord> nds;
+        public static List<List<NdCoord>> noods;
         public static List<WayCoord> ways;
         public static List<RelCoord> rels;
+        private const int nodesInOneList = 2000000;
 
 
         public static void ClearCollections( long filesize )
         {
             members = new List<Error>();
-            nds = null;
             ways = null;
             rels = null;
+            noods = null;
 
             GC.Collect( 2, GCCollectionMode.Forced, true );
 
-            nds = new List<NdCoord>( (int)( filesize / 7 * 1.2 ) );
+            noods = new List<List<NdCoord>>();
+            noods.Add( new List<NdCoord>( nodesInOneList ) );
+
+            //nds = new List<NdCoord>( (int)( filesize / 7 * 1.2 ) );
             ways = new List<WayCoord>( (int)( filesize / 50 * 1.2 ) );
             rels = new List<RelCoord>( (int)( filesize / 1100 * 1.2 ) );
         }
@@ -33,9 +37,11 @@ namespace HouseNumberValidator
         {
             if ( geo.Type == OsmGeoType.Node )
             {
+                if ( noods[noods.Count-1].Count == nodesInOneList )
+                    noods.Add( new List<NdCoord>( nodesInOneList ) );
                 try
                 {
-                    nds.Add( new NdCoord( (long)geo.Id, ( (Node)geo ).Coordinate.Latitude, ( (Node)geo ).Coordinate.Longitude ) );
+                    noods[ noods.Count - 1 ].Add( new NdCoord( (long)geo.Id, ( (Node)geo ).Coordinate.Latitude, ( (Node)geo ).Coordinate.Longitude ) );
                 }
                 catch ( OutOfMemoryException ex )
                 {
@@ -130,12 +136,17 @@ namespace HouseNumberValidator
         }
         private static void GetCoordinatesNode( long id, Error res )
         {
-            int i = nds.BinarySearch( new NdCoord( id, 0.0, 0.0 ) );
-            if ( i >= 0 )
+            foreach ( var ndlist in noods )
             {
-                NdCoord nd = nds[ i ];
-                res.lat = nd.lat;
-                res.lon = nd.lon;
+                if ( ndlist[ ndlist.Count - 1 ].id < id )
+                    continue;
+
+                int i = ndlist.BinarySearch( new NdCoord( id, 0.0, 0.0 ) );
+                if ( i >= 0 )
+                {
+                    res.lat = ndlist[ i ].lat;
+                    res.lon = ndlist[ i ].lon;
+                }
             }
         }
         private static void GetCoordinatesWay( long id, Error res )

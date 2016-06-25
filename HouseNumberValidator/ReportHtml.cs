@@ -11,7 +11,8 @@ namespace HouseNumberValidator
     {
         static string iconMap = @"<img border=0 width=16 height=16 src=icon_map.png alt='map' title='Показать на карте'>";
 
-        public static void SaveIndexList()
+
+        public static void SaveIndexList( List<Validator> validators )
         {
             string outFileName = "v.html";
 
@@ -32,19 +33,16 @@ namespace HouseNumberValidator
                 fw.Write( @"<tr>" );
                 fw.Write( @"<td><b>Регион</b></td>" );
                 fw.Write( @"<td><b>Дата проверки</b></td>" );
-                fw.Write( @"<td><b>Ошибки</b></td>" );
-                fw.Write( @"<td><b>Квартиры</b></td>" );
-                fw.Write( @"<td><b>Нет улицы</b></td>" );
-                fw.Write( @"<td><b>Нет тега</b></td>" );
-                fw.Write( @"<td><b>Дублирование</b></td>" );
-                fw.Write( @"</tr>" );
 
-                fw.WriteLine();
+                foreach ( var v in validators )
+                    fw.Write( @"<td><b>{0}</b></td>", v.Title );
+
+                fw.WriteLine( @"</tr>" );
+
                 int n = 0;
 
-                string icon = @"<img border=0 width=16 height=16 src=icon_map.png alt='map' title='Показать на карте'>";
-
-                foreach ( RegionalReport rep in Reports.Reps )
+                // формируем строки
+                foreach ( var statReigon in Report2.RegionList.StatRegions )
                 {
                     if ( n++ % 2 == 1 )
                         fw.Write( @"<tr>" );
@@ -52,114 +50,67 @@ namespace HouseNumberValidator
                         fw.Write( @"<tr class=""clr"">" );
 
                     fw.Write( @"<td>{0}</td>",
-                        Regions.RegionsDict.ContainsKey( rep.Region ) ? Regions.RegionsDict[ rep.Region ] : rep.Region );
-                    fw.Write( @"<td>{0:dd-MMM-yyyy}</td>", rep.Stamp );
+                        Regions.RegionsDict.ContainsKey( statReigon.Region ) ?
+                        Regions.RegionsDict[ statReigon.Region ].Replace( "автономный округ", "АО" ).Replace( "автономная область", "АО" ) :
+                        statReigon.Region
+                    );
+                    fw.Write( @"<td>{0:dd-MMM-yyyy}</td>", statReigon.Stamp );
 
-                    //--------------Ошибки--------------
+                    foreach ( var v in validators )
+                    {
+                        var stat = statReigon.Stats.Find( x => x.ErrorType == v.GetType().Name );
 
-                    if ( rep.Errors > 0 )
-                        fw.Write( @"<td><a href=""{2}"">{3}</a> <a href=""{0}"">{1}</a>",
-                            rep.Region + ".html",
-                            rep.Errors > 0 ? rep.Errors.ToString() : "",
-                            @"map/" + rep.Region + ".errors.map.html",
-                            icon
-                            );
-                    if ( rep.Errors == 0 )
-                        fw.Write( @"<td>{0}", "<font color=\"gold\">★</font>" );
-                    fw.Write( @" <font color=""{1}"" size=""2.3"">{0}</font></td>",
-                        rep.ErrorsOld >= 0 && rep.ErrorsOld != rep.Errors ? String.Format( "{0}", ( rep.Errors - rep.ErrorsOld ).ToString( "+#;−#;0" ) ) : "",
-                        rep.Errors - rep.ErrorsOld > 0 ? "red" : rep.Errors - rep.ErrorsOld < 0 ? "green" : "black"
-                        );
+                        if ( stat == null )
+                            fw.Write( "<td></td>" );
+                        else
+                            fw.Write( CreateIndexCell(
+                                statReigon.Region,
+                                stat.CountNewErrors,
+                                stat.CountOldErrors,
+                                v.FileEnd,
+                                v.ListableReport,
+                                v.MapableReport
+                            ) );
+                    }
 
-                    //--------------Квартиры--------------
-
-                    if ( rep.Flats > 0 )
-                        fw.Write( @"<td><a href=""{0}"">{1}</a>",
-                            rep.Region + ".flats.html",
-                            rep.Flats > 0 ? rep.Flats.ToString() : ""
-                            );
-                    if ( rep.Flats == 0 )
-                        fw.Write( @"<td>{0}", "<font color=\"gold\">★</font>" );
-                    fw.Write( @" <font color=""{1}"" size=""2.3"">{0}</font></td>",
-                        rep.FlatsOld >= 0 && rep.FlatsOld != rep.Flats ? String.Format( "{0}", ( rep.Flats - rep.FlatsOld ).ToString( "+#;−#;0" ) ) : "",
-                        rep.Flats - rep.FlatsOld > 0 ? "red" : rep.Flats - rep.FlatsOld < 0 ? "green" : "black"
-                        );
-
-                    //--------------Нет улицы--------------
-
-                    if ( rep.NoStreet > 0 )
-                        fw.Write( @"<td><a href=""{2}"">{3}</a> <a href=""{0}"">{1}</a>",
-                            rep.Region + ".nostreet.html",
-                            rep.NoStreet > 0 ? rep.NoStreet.ToString() : "",
-                            @"map/" + rep.Region + ".nostreet.map.html",
-                            icon
-                            );
-                    if ( rep.NoStreet == 0 )
-                        fw.Write( @"<td>{0}", "<font color=\"gold\">★</font>" );
-                    fw.Write( @" <font color=""{1}"" size=""2.3"">{0}</font></td>",
-                        rep.NoStreetOld >= 0 && rep.NoStreetOld != rep.NoStreet ? String.Format( "{0}", ( rep.NoStreet - rep.NoStreetOld ).ToString( "+#;−#;0" ) ) : "",
-                        rep.NoStreet - rep.NoStreetOld > 0 ? "red" : rep.NoStreet - rep.NoStreetOld < 0 ? "green" : "black"
-                        );
-
-                    //--------------Нет тега--------------
-
-                    if ( rep.Names > 0 )
-                        fw.Write( @"<td><a href=""{2}"">{3}</a> <a href=""{0}"">{1}</a>",
-                            rep.Region + ".names.html",
-                            rep.Names > 0 ? rep.Names.ToString() : "",
-                            @"map/" + rep.Region + ".names.map.html",
-                            icon
-                            );
-                    if ( rep.Names == 0 )
-                        fw.Write( @"<td>{0}", "<font color=\"gold\">★</font>" );
-                    fw.Write( @" <font color=""{1}"" size=""2.3"">{0}</font></td>",
-                        rep.NamesOld >= 0 && rep.NamesOld != rep.Names ? String.Format( "{0}", ( rep.Names - rep.NamesOld ).ToString( "+#;−#;0" ) ) : "",
-                        rep.Names - rep.NamesOld > 0 ? "red" : rep.Names - rep.NamesOld < 0 ? "green" : "black"
-                        );
-
-                    //--------------Дублирование--------------
-
-                    if ( rep.Double > 0 )
-                        fw.Write( @"<td><a href=""{2}"">{3} {1}</a>",
-                            rep.Region + ".double.html",
-                            rep.Double,
-                            @"map/" + rep.Region + ".double.map.html",
-                            icon
-                            );
-                    if ( rep.Double == 0 )
-                        fw.Write( @"<td>{0}", "<font color=\"gold\">★</font>" );
-                    fw.Write( @" <font color=""{1}"" size=""2.3"">{0}</font></td>",
-                        rep.DoubleOld >= 0 && rep.DoubleOld != rep.Double ? String.Format( "{0}", ( rep.Double - rep.DoubleOld ).ToString( "+#;−#;0" ) ) : "",
-                        rep.Double - rep.DoubleOld > 0 ? "red" : rep.Double - rep.DoubleOld < 0 ? "green" : "black"
-                        );
-
-                    fw.Write( @"</tr>" );
-                    fw.WriteLine();
+                    fw.WriteLine( @"</tr>" );
                 }
-
-                fw.WriteLine( @"</table>" );
-                fw.WriteLine( @"</body></html>" );
             }
+
             File.Copy( Paths.DirOut + outFileName, Paths.DirOut + "index.html", true );
         }
 
-        private static string CreateIndexCell(string region, int value, int oldValuse, string file)
+        private static string CreateIndexCell( string region, int value, int oldValuse, string file, bool listable, bool mapable )
         {
-            string result = "";
+            string result = "<td>";
 
             if ( value > 0 )
-                result += String.Format( @"<td><a href=""{2}"">{3}</a> <a href=""{0}"">{1}</a>",
-                    region + ( file == "errors" ? "" : ( "." + file ) ) + ".html",
-                    value > 0 ? value.ToString() : "",
-                    @"map/" + region + "." + file + ".map.html",
-                    iconMap
-                );
+            {
+                if ( listable && mapable )
+                    result += String.Format( @"<a href=""{0}"">{1}</a> <a href=""{2}"">{3}</a>",
+                        @"map/" + region + "." + file + ".map.html",
+                        iconMap,
+                        region + "." + file + ".html",
+                        value > 0 ? value.ToString() : ""
+                    );
+                if ( !listable && mapable )
+                    result += String.Format( @"<a href=""{0}"">{1} {2}</a>",
+                        @"map/" + region + "." + file + ".map.html",
+                        iconMap,
+                        value > 0 ? value.ToString() : ""
+                    );
+            }
+
             if ( value == 0 )
-                result += String.Format( @"<td>{0}", "<font color=\"gold\">★</font>" );
-            result += String.Format( @" <font color=""{1}"" size=""2.3"">{0}</font></td>",
-                oldValuse >= 0 && oldValuse != value ? String.Format( "{0}", ( value - oldValuse ).ToString( "+#;−#;0" ) ) : "",
-                value - oldValuse > 0 ? "red" : value - oldValuse < 0 ? "green" : "black"
-            );
+                result += "<font color=\"gold\">★</font>";
+
+            if ( oldValuse >= 0 && oldValuse != value )
+                result += String.Format( @" <span class=""{1}"">{0}</span>",
+                    ( value - oldValuse ).ToString( "+#;−#;0" ), //−
+                    value > oldValuse ? "countup" : "countdown"
+                );
+
+            result += "</td>";
 
             return result;
         }
@@ -218,9 +169,8 @@ namespace HouseNumberValidator
                 fw.Write( elements );
                 fw.Write( @"');return false;""><img border=0 width=20 height=20 src=icon_josm_all.png></a>" );
                 fw.Write( @"</td>" );
-                foreach ( var header in validator.GetTableHead() )
-                    fw.Write( @"<td><b>{0}</b></td>", header );
-
+                fw.Write( @"<td><b>Ошибка</b></td>" );
+                fw.Write( @"<td><b>Доп. информация</b></td>" );
 
                 int n = 0;
                 foreach ( Error err in validator.Errors )
@@ -232,8 +182,6 @@ namespace HouseNumberValidator
                     fw.Write( @"<td><a href=""http://127.0.0.1:8111/load_object?objects={0}{1}"" onClick=""open_josm('{0}{1}');return false;""><img src=icon_to_josm.png></a>"
                         + @"&nbsp;<a href=""http://level0.osmz.ru/?url={0}{1}""><img src=icon_to_level0.png></a></td>",
                         err.TypeStringShort, err.Osmid );
-                    //fw.Write( @"<td><a href=""http://level0.osmz.ru/?url={0}{1}""><img src=icon_to_level0.png></a></td>",
-                    //    err.TypeStringShort, err.Osmid );
                     fw.Write( @"<td><a href=""http://osm.org/{0}/{1}"">{2}</a></td>", 
                         err.TypeString, err.Osmid, err.Value );
                     fw.Write( @"<td>" + err.Description + @"</td>" );

@@ -7,17 +7,18 @@ using OsmSharp.Osm;
 
 namespace HouseNumberValidator
 {
-    public class ValidatorUnorrectTag : Validator
+    public class ValidatorUncorrectTag : Validator
     {
         Dictionary<List<string>, Dictionary<string, string>> tags;
 
-        public ValidatorUnorrectTag()
+        public ValidatorUncorrectTag()
         {
             errors = new List<Error>();
 
-            fileListEnd = ".uncorrect.html";
-            fileMapEnd = ".uncorrect.map.html";
-            description = "";
+            FileEnd = "uncorrect";
+            Title = "Не те теги";
+
+            descriptionForList = "";
             descriptionForMap = "";
 
             tags = new Dictionary<List<string>, Dictionary<string, string>>
@@ -172,17 +173,24 @@ namespace HouseNumberValidator
                     new Dictionary<string,string>{
                         { "amenity", "clinic" }
                     }
+                },
+                {
+                    new List<string>{
+                        "баня",
+                        "сауна"
+                    },
+                    new Dictionary<string,string>{
+                        { "amenity", "sauna" }
+                    }
                 }
             };
         }
 
         public override void ValidateObject( OsmGeo geo )
         {
-            if ( !geo.Tags.ContainsKey( "name" ) )
-                return;
-
             string value;
-            geo.Tags.TryGetValue( "name", out value );
+            if ( !geo.Tags.TryGetValue( "name", out value ) )
+                return;
 
             foreach (var keyvalue in tags)
             {
@@ -193,18 +201,12 @@ namespace HouseNumberValidator
                         if ( !geo.Tags.ContainsKeyValue( tag.Key, tag.Value ) )
                             error.Description += tag.Key + " = " + tag.Value + "<br>";
                     if ( !error.Description.IsEmpty() )
+                    {
                         errors.Add( error );
+                    }
                 }
             }
 
-        }
-
-        public override string[] GetTableHead()
-        {
-            string[] result = new string[ 2 ];
-            result[ 0 ] = "Ошибка";
-            result[ 1 ] = "Доп. информация";
-            return result;
         }
     }
 }

@@ -12,9 +12,9 @@ namespace HouseNumberValidator
     {
         public ValidatorHouseNumb()
         {
-            fileListEnd = ".html";
-            fileMapEnd = ".errors.map.html";
-            description = "";
+            FileEnd = "errors";
+            Title = "Ошибки";
+            descriptionForList = "";
             descriptionForMap = "";
 
             errors = new List<Error>();
@@ -27,7 +27,7 @@ namespace HouseNumberValidator
             {
                 if ( geo.Tags.TryGetValue( String.Format( "addr{0}:housenumber", i > 1 ? i.ToString() : "" ), out value ) )
                 {
-                    if ( !GeoOperations.CountryRu( geo ) )
+                    if ( !GeoCollections.CountryRu( geo ) )
                         continue;
 
                     var error = new Error( geo, value );
@@ -37,14 +37,13 @@ namespace HouseNumberValidator
 
                     if ( !valid_error || !valid_warn )
                     {
-                        GeoOperations.GetCoordinates( geo, error );
                         if ( !valid_warn )
                             error.Level = ErrorLevel.Level5;
                         if ( !valid_error )
                             error.Level = ErrorLevel.Level0;
                         errors.Add( error );
                     }
-                    error.Description += GeoOperations.GetNotes( geo.Tags );
+                    error.Description += GeoCollections.GetNotes( geo.Tags );
                 }
                 else
                     break;
@@ -180,26 +179,6 @@ namespace HouseNumberValidator
                 //hn.Description += ". Надо: <b>" + result + "</b><br>";
             }
             return result;
-        }
-
-        public override string[] GetTableHead()
-        {
-            string[] result = new string[ 2 ];
-            result[ 0 ] = "Ошибка";
-            result[ 1 ] = "Доп. информация";
-            return result;
-        }
-        public IEnumerable<string[]> GetTableTr()
-        {
-            string[] result = new string[ 3 ];
-
-            foreach ( var error in errors )
-            {
-                result[ 0 ] = String.Format( @"<a href=""http://127.0.0.1:8111/load_object?objects={0}{1}"" onClick=""open_josm('{0}{1}');return false;""><img src=icon_to_josm.png></a>", error.Type, error.Osmid );
-                result[ 1 ] = String.Format( @"<a href=""http://osm.org/{0}/{1}"">{2}</a>", error.Type, error.Osmid, error.Value );
-                result[ 2 ] = error.Description;
-                yield return result;
-            }
         }
     }
 }

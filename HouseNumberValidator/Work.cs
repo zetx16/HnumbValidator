@@ -25,7 +25,7 @@ namespace HouseNumberValidator
         private string[] GetDownFiles( int parts )
         {
             int n;
-            var r = Reports.Reps;
+            var r = Report2.RegionList.StatRegions;
             var minDate = r.Min( x => x.Stamp );
             int firsIndex = 0;
 
@@ -68,7 +68,9 @@ namespace HouseNumberValidator
 
             foreach ( string region in regions )
             {
+                Console.CursorLeft = 0;
                 Console.Write( "Download {0}", region );
+
                 webClient.DownloadFile( @"http://data.gis-lab.info/osm_dump/dump/latest/" + region + typefile,
                     Paths.DirIn + region + typefile + ".down" );
                 File.Delete( Paths.DirIn + region + typefile );
@@ -83,10 +85,18 @@ namespace HouseNumberValidator
                 stw.Start();
                 ReadPbfFile( file );
                 stw.Stop();
-                //Console.WriteLine( stw.Elapsed );
+                using ( StreamWriter wr = new StreamWriter( "log_speed.txt", true ) )
+                    wr.WriteLine( "{0:dd.MM.yyyy}\t{1}\t{2}", file.LastWriteTime, region, stw.Elapsed );
 
                 WriteReports( region, file.LastWriteTime );
+
+                Console.CursorLeft = 0;
+                Console.Write( "Upload {0}", region );
+
                 UploadToFtp( region );
+
+                Console.CursorLeft = 0;
+                Console.WriteLine( "Completed {0}", region );
             }
         }
 
@@ -108,16 +118,19 @@ namespace HouseNumberValidator
                     continue;
 
                 Console.CursorLeft = 0;
-                Console.Write( "Validate {0}\t", region );
+                Console.Write( "Validate {0}", region );
 
                 Stopwatch stw = new Stopwatch();
                 stw.Start();
                 ReadPbfFile( file );
                 stw.Stop();
-                //Console.WriteLine( stw.Elapsed );
+                using ( StreamWriter wr = new StreamWriter( "log_speed.txt", true ) )
+                    wr.WriteLine( "{0:dd.MM.yyyy}\t{1}\t{2}", file.LastWriteTime, region, stw.Elapsed );
 
 
                 WriteReports( region, file.LastWriteTime );
+                Console.CursorLeft = 0;
+                Console.WriteLine( "Completed {0}", region );
             }
         }
 
@@ -129,8 +142,9 @@ namespace HouseNumberValidator
             validators.Add( new ValidatorNoStreet() );
             validators.Add( new ValidatorNames() );
             validators.Add( new ValidatorDoubleTag() );
-            validators.Add( new ValidatorUnorrectTag() );
-            GeoOperations.ClearCollections( pbfile.Length );
+            validators.Add( new ValidatorUncorrectTag() );
+            validators.Add( new ValidatorOpeningDate() );
+            GeoCollections.ClearCollections( pbfile.Length );
 
             using ( FileStream fileStream = pbfile.OpenRead() )
             {
@@ -139,8 +153,8 @@ namespace HouseNumberValidator
                 {
                     if ( geo.Id.HasValue )
                     {
+                        GeoCollections.Add( geo );
                         validators.ForEach( x => x.ValidateObject( geo ) );
-                        GeoOperations.Add( geo );
                     }
                 }
             }
@@ -150,27 +164,14 @@ namespace HouseNumberValidator
 
         private void WriteReports( string region, DateTime dateDump )
         {
-            Console.CursorLeft = 0;
-            Console.WriteLine( "{0}:\t{1,4} err, {2,3} flats, {3,4} strt, {4,5} names", region,
-                validators.Find( x => x is ValidatorHouseNumb ).Errors.Count,
-                validators.Find( x => x is ValidatorFlats ).Errors.Count,
-                validators.Find( x => x is ValidatorNoStreet ).Errors.Count,
-                validators.Find( x => x is ValidatorNames ).Errors.Count
-                );
-
-            Reports.Edit( new RegionalReport( region, dateDump,
-                validators.Find( x => x is ValidatorHouseNumb ).Errors.Count,
-                validators.Find( x => x is ValidatorFlats ).Errors.Count,
-                validators.Find( x => x is ValidatorNoStreet ).Errors.Count,
-                validators.Find( x => x is ValidatorNames ).Errors.Count,
-                validators.Find( x => x is ValidatorDoubleTag ).Errors.Count
-                ) );
-
+            var a = validators.Select( x => new StatValidator( x.GetType().Name, x.Errors.Count ) ).ToList();
+            Report2.RegionList.UpdateOrAddRegion( region, dateDump, a );
+            Report2.Save();
 
             validators.ForEach( x => ReportHtml.SaveList( x, region, dateDump ) );
             validators.ForEach( x => ReportHtml.SaveMap( x, region ) );
 
-            ReportHtml.SaveIndexList();
+            ReportHtml.SaveIndexList( validators );
         }
 
         private void UploadToFtp( string region )
@@ -201,36 +202,25 @@ namespace HouseNumberValidator
                 }
             }
 
-            List<string> files = new List<string>{
-                "v",
-                "",
-                "warning",
-                "flats",
-                "nostreet",
-                "names",
-                "errors.map",
-                "warning.map",
-                "nostreet.map",
-                "names.map",
-                "double.map"
-            };
-
-
-            foreach ( var fl in files )
+            List<string> files = new List<string>();
+            foreach ( var validator in validators.Select( x => x.FileEnd ) )
             {
-                string filename = region + "." + fl + ".html";
-                if ( fl == "" )
-                    filename = region + ".html";
-                if ( fl == "v" )
-                    filename = "v.html";
-                if ( fl.EndsWith( "map" ) )
-                    filename = @"map/" + region + "." + fl + ".html";
+                files.Add(           region + "." + validator + ".html" );
+                files.Add( @"map/" + region + "." + validator + ".map.html" );
+            }
 
+            files.Add( "v.html" );
+            files.Add( "v2.html" );
+            files.Add( "index.html" );
+
+
+            foreach ( var file in files )
+            {
                 FileStream fileStream;
-                try { fileStream = File.OpenRead( Paths.DirOut + filename ); }
+                try { fileStream = File.OpenRead( Paths.DirOut + file ); }
                 catch ( FileNotFoundException ex ) { continue; }
 
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create( ftpUrl + filename );
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create( ftpUrl + file );
                 request.Method = WebRequestMethods.Ftp.UploadFile;
                 request.Credentials = new NetworkCredential( ftpLogin, ftpPass );
                 Stream ftpStream = request.GetRequestStream();

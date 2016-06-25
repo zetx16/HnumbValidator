@@ -9,12 +9,13 @@ namespace HouseNumberValidator
 {
     static class Paths
     {
-        static string shortDirIn      = @"";
+        static string shortDirIn      = @"\";
         static string shortDirOut     = @"\log\";
         static string shortDirOutTemp = @"\log\temp\";
         static string shortDirOutMap  = @"\log\map\";
 
         static string fileReport      = @"Report.txt";
+        static string fileReportXml   = @"Report.xml";
         static string fileIndexBegin  = @"index_begin.html";
         static string fileIndexEnd    = @"index_end.html";
 
@@ -30,6 +31,7 @@ namespace HouseNumberValidator
         public static string DirOutMap      { get { return dirOutMap; } }
 
         public static string FileReport     { get { return fileReport; } }
+        public static string FileReportXml  { get { return fileReportXml; } }
         public static string FileIndexBegin { get { return fileIndexBegin; } }
         public static string FileIndexEnd   { get { return fileIndexEnd; } }
 

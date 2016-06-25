@@ -55,9 +55,9 @@ namespace HouseNumberValidator
             TimeStump = (DateTime)geo.TimeStamp;
             Value = value;
 
+            GeoCollections.GetCoordinates( geo, this );
+
             Description = String.Empty;
-            lat = 0;
-            lon = 0;
             Level = lvl;
         }
 

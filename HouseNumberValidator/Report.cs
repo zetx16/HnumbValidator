@@ -4,155 +4,164 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Xml.Serialization;
 
 namespace HouseNumberValidator
 {
-    public class RegionalReport
+    [Serializable]
+    public class StatValidator
+    {
+        public string ErrorType;
+        public int CountNewErrors;
+        public int CountOldErrors;
+
+        public void UpdateCountErrors( int newcount )
+        {
+            CountOldErrors = CountNewErrors;
+            CountNewErrors = newcount;
+        }
+
+
+
+        public StatValidator( string type, int cnew, int cold )
+        {
+            ErrorType = type;
+            CountNewErrors = cnew;
+            CountOldErrors = cold;
+        }
+
+        public StatValidator( string type, int cnew )
+            : this( type, cnew, -1 )
+        { }
+
+        public StatValidator()
+        { }
+    }
+
+    [Serializable]
+    public class StatRegion
     {
         public string Region;
-
-        public int Errors;
-        public int ErrorsOld;
-
-        public int Flats;
-        public int FlatsOld;
-
-        public int NoStreet;
-        public int NoStreetOld;
-
-        public int Names;
-        public int NamesOld;
-
-        public int Double;
-        public int DoubleOld;
-
         public DateTime Stamp;
-        
-        public RegionalReport( string reg, DateTime dt, int er, int flt, int str, int nm, int dbl )
+        public List<StatValidator> Stats;
+
+        public void AddStatForValidator( StatValidator stat )
         {
-            Region      = reg;
-
-            Errors      = er;
-            Flats       = flt;
-            NoStreet    = str;
-            Names       = nm;
-            Double      = dbl;
-
-            ErrorsOld   = -1;
-            FlatsOld    = -1;
-            NoStreetOld = -1;
-            NamesOld    = -1;
-            DoubleOld   = -1;
-
-            Stamp       = dt;
+            Stats.Add( stat );
         }
 
-        public RegionalReport( string str )
+        public void AddResult( string type, int count )
         {
-            string[] strs = str.Split( ',' );
+            var i = Stats.FindIndex( x => x.ErrorType == type );
 
-            Region = strs[ 0 ];
-            Stamp  = DateTime.Parse( strs[ 1 ] ); 
+            if ( i < 0 )
+            {
+                Stats.Add( new StatValidator( type, count ) );
+                return;
+            }
 
-            Errors      = int.Parse( strs[ 2 ] );
-            ErrorsOld   = int.Parse( strs[ 3 ] );
-            Flats       = int.Parse( strs[ 4 ] );
-            FlatsOld    = int.Parse( strs[ 5 ] );
-            NoStreet    = int.Parse( strs[ 6 ] );
-            NoStreetOld = int.Parse( strs[ 7 ] );
-            Names       = int.Parse( strs[ 8 ] );
-            NamesOld    = int.Parse( strs[ 9 ] );
-            Double      = int.Parse( strs[ 10 ] );
-            DoubleOld   = int.Parse( strs[ 11 ] );
+            Stats[ i ].UpdateCountErrors( count );
         }
 
-        public override string ToString()
+        public bool UpdateDate( DateTime stamp )
         {
-            return string.Format( "{0},\t{1:dd.MM.yyyy},{2,5},{3,5},{4,5},{5,5},{6,5},{7,5},{8,5},{9,5},{10,5},{11,5}",
-                Region, Stamp,
-                Errors, ErrorsOld,
-                Flats, FlatsOld,
-                NoStreet, NoStreetOld,
-                Names, NamesOld,
-                Double, DoubleOld 
-                );
+            if ( Stamp == stamp.Date )
+                return false;
+
+            Stamp = stamp.Date;
+            return true;
+        }
+
+
+        public StatRegion( string region, DateTime stamp, List<StatValidator> stats )
+        {
+            Region = region;
+            Stamp  = stamp.Date;
+            Stats  = stats;
+        }
+        public StatRegion( string region, DateTime stamp )
+            : this( region, stamp, new List<StatValidator>() )
+        { }
+
+        public StatRegion()
+        {
+            Stats = new List<StatValidator>();
         }
     }
 
-    public static class Reports
+    [Serializable]
+    public class StatRegionList
     {
-        public static List<RegionalReport> Reps = new List<RegionalReport>();
+        public List<StatRegion> StatRegions;
 
-        static Reports()
+        public void UpdateOrAddRegion( string region, DateTime stamp, List<StatValidator> stats )
         {
-            if ( !File.Exists( Paths.FileReport ) )
+            var i = StatRegions.FindIndex( x => x.Region == region );
+
+            if ( i < 0 )
+            {
+                StatRegions.Add( new StatRegion( region, stamp, stats ) );
                 return;
+            }
 
-            using ( StreamReader rd = new StreamReader( Paths.FileReport ) )
+            bool dateUpdated = false;
+            foreach ( var stat in stats )
             {
-                while ( !rd.EndOfStream )
+                int iStatValidator = StatRegions[ i ].Stats.FindIndex( x => x.ErrorType == stat.ErrorType );
+                if ( iStatValidator >= 0 )
                 {
-                    Reps.Add( new RegionalReport( rd.ReadLine() ) );
+                    if ( !dateUpdated )
+                        dateUpdated = StatRegions[ i ].UpdateDate( stamp );
+                    if ( dateUpdated )
+                        StatRegions[ i ].Stats[ iStatValidator ].UpdateCountErrors( stat.CountNewErrors );
                 }
+                else
+                    StatRegions[ i ].Stats.Add( new StatValidator( stat.ErrorType, stat.CountNewErrors ) );
             }
         }
 
-        public static void Edit( RegionalReport report )
+        public StatRegion GetRegion( string region )
         {
-            bool finded = false;
-            foreach ( RegionalReport r in Reps )
-            {
-                if ( r.Region == report.Region )
-                {
-                    if ( r.Stamp.Date != report.Stamp.Date )
-                    {
-                        r.ErrorsOld = r.Errors;
-                        r.FlatsOld = r.Flats;
-                        r.NoStreetOld = r.NoStreet;
-                        r.NamesOld = r.Names;
-                        r.DoubleOld = r.Double;
-                    }
-
-                    r.Errors = report.Errors;
-                    r.Flats = report.Flats;
-                    r.NoStreet = report.NoStreet;
-                    r.Names = report.Names;
-                    r.Stamp = report.Stamp;
-                    r.Double = report.Double;
-
-                    finded = true;
-                    break;
-                }
-            }
-
-            if ( !finded )
-                Reps.Add( report );
-
-            Save();
+            return StatRegions.Find( x => x.Region == region );
         }
 
-        public static RegionalReport GetRegion( string region )
-        {
 
-            foreach ( RegionalReport r in Reps )
+        public StatRegionList( List<StatRegion> statRegions )
+        {
+            StatRegions = statRegions;
+        }
+        public StatRegionList()
+        {
+            StatRegions = new List<StatRegion>();
+        }
+    }
+
+    public static class Report2
+    {
+        public static StatRegionList RegionList;
+
+        static Report2()
+        {
+            if ( !File.Exists( Paths.FileReportXml ) )
             {
-                if ( r.Region == region )
-                {
-                    return r;
-                }
+                RegionList = new StatRegionList();
+                return;
             }
-            return null;
+
+            XmlSerializer formatter = new XmlSerializer( typeof( StatRegionList ) );
+
+            using ( FileStream fs = new FileStream( Paths.FileReportXml, FileMode.OpenOrCreate ) )
+                RegionList = (StatRegionList)formatter.Deserialize( fs );
+
+            //RegionList.StatRegions.Sort( ( x, y ) => Regions.RegionsDict[x.Region].CompareTo( Regions.RegionsDict[y.Region] ) );
         }
 
         public static void Save()
         {
-            using ( StreamWriter wr = new StreamWriter( Paths.FileReport, false ) )
-            {
-                foreach ( RegionalReport r in Reps )
-                {
-                    wr.WriteLine( r.ToString() );
-                }
-            }
+            XmlSerializer formatter = new XmlSerializer( typeof( StatRegionList ) );
+
+            using ( FileStream fs = new FileStream( Paths.FileReportXml, FileMode.OpenOrCreate ) )
+                formatter.Serialize( fs, RegionList );
         }
     }
 }

@@ -16,7 +16,7 @@ namespace HouseNumberValidator
             p.Validate();
 
             Console.WriteLine( "Press Enter to exit..." );
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
         private static void ParseArgs( string[] args )
@@ -26,7 +26,7 @@ namespace HouseNumberValidator
             bool commDirectoryOutput = false;
             foreach ( var arg in args )
             {
-                if ( arg == "down" )
+                if ( arg == "-download" || arg == "-down" || arg == "-d" )
                     Options.DownloadFromGislab = true;
 
                 if ( commRegion )
@@ -34,7 +34,7 @@ namespace HouseNumberValidator
                     Options.Regions = ParseRegions( arg );
                     commRegion = false;
                 }
-                if ( arg == "regions" )
+                if ( arg == "-regions" || arg == "-region" || arg == "-r" )
                     commRegion = true;
 
                 if ( commDirectoryInput )
@@ -42,7 +42,7 @@ namespace HouseNumberValidator
                     Options.DirectoryInput = arg;
                     commDirectoryInput = false;
                 }
-                if ( arg == "indir" )
+                if ( arg == "-indir" || arg == "-i" )
                     commDirectoryInput = true;
 
                 if ( commDirectoryOutput )
@@ -50,10 +50,10 @@ namespace HouseNumberValidator
                     Options.DirectoryOutput = arg;
                     commDirectoryOutput = false;
                 }
-                if ( arg == "outdir" )
+                if ( arg == "-outdir" || arg == "-o" )
                     commDirectoryOutput = true;
 
-                if ( arg == "upload" )
+                if ( arg == "-upload" || arg == "-u" )
                     Options.UploadToFtp = true;
             }
 
