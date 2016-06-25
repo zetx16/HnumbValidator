@@ -25,7 +25,7 @@ namespace HouseNumberValidator
         private string[] GetDownFiles( int parts )
         {
             int n;
-            var r = Report2.RegionList.StatRegions;
+            var r = Reports.RegionList.StatRegions;
             var minDate = r.Min( x => x.Stamp );
             int firsIndex = 0;
 
@@ -81,12 +81,16 @@ namespace HouseNumberValidator
                 Console.CursorLeft = 0;
                 Console.Write( "Validate {0}", region );
 
+#if DEBUG
                 Stopwatch stw = new Stopwatch();
                 stw.Start();
+#endif
                 ReadPbfFile( file );
+#if DEBUG
                 stw.Stop();
                 using ( StreamWriter wr = new StreamWriter( "log_speed.txt", true ) )
                     wr.WriteLine( "{0:dd.MM.yyyy}\t{1}\t{2}", file.LastWriteTime, region, stw.Elapsed );
+#endif
 
                 WriteReports( region, file.LastWriteTime );
 
@@ -114,18 +118,22 @@ namespace HouseNumberValidator
                 //DateTime stump = Reports.GetRegion( region ).Stamp;
 
 
-                if ( regions != null && regions.Length > 0 && !regions.Contains( region ) ) 
+                if ( regions != null && regions.Length > 0 && !regions.Contains( region ) )
                     continue;
 
                 Console.CursorLeft = 0;
                 Console.Write( "Validate {0}", region );
-
+                
+#if DEBUG
                 Stopwatch stw = new Stopwatch();
                 stw.Start();
+#endif
                 ReadPbfFile( file );
+#if DEBUG
                 stw.Stop();
                 using ( StreamWriter wr = new StreamWriter( "log_speed.txt", true ) )
                     wr.WriteLine( "{0:dd.MM.yyyy}\t{1}\t{2}", file.LastWriteTime, region, stw.Elapsed );
+#endif
 
 
                 WriteReports( region, file.LastWriteTime );
@@ -165,8 +173,8 @@ namespace HouseNumberValidator
         private void WriteReports( string region, DateTime dateDump )
         {
             var a = validators.Select( x => new StatValidator( x.GetType().Name, x.Errors.Count ) ).ToList();
-            Report2.RegionList.UpdateOrAddRegion( region, dateDump, a );
-            Report2.Save();
+            Reports.RegionList.UpdateOrAddRegion( region, dateDump, a );
+            Reports.Save();
 
             validators.ForEach( x => ReportHtml.SaveList( x, region, dateDump ) );
             validators.ForEach( x => ReportHtml.SaveMap( x, region ) );
@@ -210,7 +218,6 @@ namespace HouseNumberValidator
             }
 
             files.Add( "v.html" );
-            files.Add( "v2.html" );
             files.Add( "index.html" );
 
 

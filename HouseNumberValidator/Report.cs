@@ -136,11 +136,11 @@ namespace HouseNumberValidator
         }
     }
 
-    public static class Report2
+    public static class Reports
     {
         public static StatRegionList RegionList;
 
-        static Report2()
+        static Reports()
         {
             if ( !File.Exists( Paths.FileReportXml ) )
             {

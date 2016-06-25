@@ -30,28 +30,23 @@ namespace HouseNumberValidator
                 if ( DateTime.TryParse( value, out opendate ) )
                 {
                     if ( opendate <= DateTime.Now )
-                    {
-                        Error err = new Error( geo, value );
-                        err.Description = "Дата открытия прошла";
-                        errors.Add( err );
-                    }
+                        AddErrorToList( geo, value, "Дата открытия прошла" );
                 }
                 else if ( int.TryParse( value, out openyear ) )
                 {
                     if ( openyear <= DateTime.Now.Year )
-                    {
-                        Error err = new Error( geo, value );
-                        err.Description = "Дата открытия прошла";
-                        errors.Add( err );
-                    }
+                        AddErrorToList( geo, value, "Дата открытия прошла" );
                 }
                 else
-                {
-                    Error err = new Error( geo, value );
-                    err.Description = "Дата не распознана";
-                    errors.Add( err );
-                }
+                    AddErrorToList( geo, value, "Дата не распознана" );
             }
+        }
+
+        private void AddErrorToList( OsmGeo geo, string value, string description )
+        {
+            Error err = new Error( geo, value );
+            err.Description = description;
+            errors.Add( err );
         }
     }
 }

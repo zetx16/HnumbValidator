@@ -42,7 +42,7 @@ namespace HouseNumberValidator
                 int n = 0;
 
                 // формируем строки
-                foreach ( var statReigon in Report2.RegionList.StatRegions )
+                foreach ( var statReigon in Reports.RegionList.StatRegions )
                 {
                     if ( n++ % 2 == 1 )
                         fw.Write( @"<tr>" );
