@@ -14,8 +14,8 @@ namespace HouseNumberValidator
         {
             FileEnd = "errors";
             Title = "Ошибки";
-            descriptionForList = "";
-            descriptionForMap = "";
+            descriptionForList = "Номера домов не соответствующие принятой схеме.";
+            descriptionForMap = "Номера домов не соответствующие принятой схеме.";
 
             errors = new List<Error>();
         }

@@ -14,7 +14,7 @@ namespace HouseNumberValidator
 
         public static void SaveIndexList( List<Validator> validators )
         {
-            string outFileName = "v.html";
+            string outFileName = "index.html";
 
             using ( StreamWriter fw = new StreamWriter( Paths.DirOut + outFileName, false, Encoding.UTF8 ) )
             {
@@ -75,9 +75,9 @@ namespace HouseNumberValidator
 
                     fw.WriteLine( @"</tr>" );
                 }
+                fw.WriteLine( @"</table>" );
+                fw.WriteLine( @"</body></html>" );
             }
-
-            File.Copy( Paths.DirOut + outFileName, Paths.DirOut + "index.html", true );
         }
 
         private static string CreateIndexCell( string region, int value, int oldValuse, string file, bool listable, bool mapable )
@@ -157,7 +157,9 @@ namespace HouseNumberValidator
                 );
 
                 if ( validator.DescriptionForList != string.Empty )
-                    fw.WriteLine( "<br>" + validator.DescriptionForList + "<br>" );
+                    fw.WriteLine( @"<p class=""description"">" + validator.DescriptionForList + "</p>" );
+                else
+                    fw.Write( @"<br>" );
 
 
                 fw.WriteLine( @"<table>" );

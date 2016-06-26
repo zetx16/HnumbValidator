@@ -21,3 +21,11 @@ A:hover {
 A:visited { 
 	color: mediumblue; 
 }
+.description {
+	border: 1px solid #e9e8e8;
+	background: #f5f6f8;
+	padding: 10px;
+	border-radius: 3px;
+	display: inline-block;
+	width: auto;
+}

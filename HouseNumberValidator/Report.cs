@@ -21,6 +21,11 @@ namespace HouseNumberValidator
             CountNewErrors = newcount;
         }
 
+        public void UpdateCountErrorsAndNoUpdateOldCount( int newcount )
+        {
+            CountNewErrors = newcount;
+        }
+
 
 
         public StatValidator( string type, int cnew, int cold )
@@ -114,6 +119,8 @@ namespace HouseNumberValidator
                         dateUpdated = StatRegions[ i ].UpdateDate( stamp );
                     if ( dateUpdated )
                         StatRegions[ i ].Stats[ iStatValidator ].UpdateCountErrors( stat.CountNewErrors );
+                    else
+                        StatRegions[ i ].Stats[ iStatValidator ].UpdateCountErrorsAndNoUpdateOldCount( stat.CountNewErrors );
                 }
                 else
                     StatRegions[ i ].Stats.Add( new StatValidator( stat.ErrorType, stat.CountNewErrors ) );
