@@ -125,13 +125,18 @@ namespace HouseNumberValidator
             string korpus2 = @"[кК]о?р?п?у?с?[\. ]*";
             string stroen2 = @"[сc]т?р?о?е?н?и?е?[\. ]*";
             string sooryz2 = @"соору?ж?е?н?и?е?[\. ]*";
+            string litera2 = @"лит?е?р?а?[\. ]*";
             string numb2 = @"[0-9А-Я]+";
+            string word2 = @"[А-Я]+";
 
-            full2Pattern = String.Format( @"д?\.? ?([0-9]+(?:(?:(?!{0}{3}|{1}{3}|{2}{3}))[А-Яа-я])?)(?:,? ?{0}({3}))?(?: ?{1}({3}))?(?: ?{2}({3}))?",
+            full2Pattern = String.Format( @"д?\.? ?([0-9]+(?:(?:(?!{0}{4}|{1}{4}|{2}{4}|{3}{5}))[А-Яа-я])?)(?:,? ?{0}({4}))?(?:,? ?{1}({4}))?(?:,? ?{2}({4}))?(?:,? ?{3}({5}))?",
                 korpus2,
                 stroen2,
                 sooryz2,
-                numb2 );
+                litera2,
+                numb2,
+                word2
+            );
             full2 = new Regex( full2Pattern, RegexOptions.Compiled );
 
 

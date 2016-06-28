@@ -9,7 +9,7 @@ namespace HouseNumberValidator
 {
     static class ReportHtml
     {
-        static string iconMap = @"<img border=0 width=16 height=16 src=icon_map.png alt='map' title='Показать на карте'>";
+        static string iconMap = @"<img border=0 width=16 height=16 src=icons/icon_map.png alt='map' title='Показать на карте'>";
 
 
         public static void SaveIndexList( List<Validator> validators )
@@ -24,10 +24,13 @@ namespace HouseNumberValidator
                 fw.WriteLine( @"</style></head>" );
 
                 fw.WriteLine( @"<body>" );
-                fw.WriteLine( @"<b>Валидатор номеров домов</b> | " );
+                fw.WriteLine( @"<b>Валидатор номеров домов</b>" );
+                fw.Write( @" | " );
                 fw.WriteLine( @"<a href=""http://forum.openstreetmap.org/viewtopic.php?id=53343"">Форум</a>" );
                 fw.Write( @" | " );
                 fw.WriteLine( @"<a href=""http://wiki.openstreetmap.org/wiki/RU:Валидаторы"">Другие валидаторы</a>" );
+                fw.Write( @" | " );
+                fw.WriteLine( @"<a href=""download"">Скачать</a>" );
                 fw.Write( @"<br><br>" );
                 fw.WriteLine( @"<table>" );
                 fw.Write( @"<tr>" );
@@ -169,7 +172,7 @@ namespace HouseNumberValidator
                 fw.Write( elements );
                 fw.Write( @""" onClick=""open_josm('" );
                 fw.Write( elements );
-                fw.Write( @"');return false;""><img border=0 width=20 height=20 src=icon_josm_all.png></a>" );
+                fw.Write( @"');return false;""><img border=0 width=20 height=20 src=icons/icon_josm_all.png></a>" );
                 fw.Write( @"</td>" );
                 fw.Write( @"<td><b>Ошибка</b></td>" );
                 fw.Write( @"<td><b>Доп. информация</b></td>" );
@@ -181,8 +184,8 @@ namespace HouseNumberValidator
                         fw.Write( @"<tr>" );
                     else
                         fw.Write( @"<tr class=""clr"">" );
-                    fw.Write( @"<td><a href=""http://127.0.0.1:8111/load_object?objects={0}{1}"" onClick=""open_josm('{0}{1}');return false;""><img src=icon_to_josm.png></a>"
-                        + @"&nbsp;<a href=""http://level0.osmz.ru/?url={0}{1}""><img src=icon_to_level0.png></a></td>",
+                    fw.Write( @"<td><a href=""http://127.0.0.1:8111/load_object?objects={0}{1}"" onClick=""open_josm('{0}{1}');return false;""><img src=icons/icon_to_josm.png></a>"
+                        + @"&nbsp;<a href=""http://level0.osmz.ru/?url={0}{1}""><img src=icons/icon_to_level0.png></a></td>",
                         err.TypeStringShort, err.Osmid );
                     fw.Write( @"<td><a href=""http://osm.org/{0}/{1}"">{2}</a></td>", 
                         err.TypeString, err.Osmid, err.Value );
@@ -201,8 +204,7 @@ namespace HouseNumberValidator
 
             using ( StreamWriter wr = new StreamWriter( indexFile ) )
             {
-                using ( StreamReader rd = new StreamReader( Paths.FileIndexBegin ) )
-                    wr.Write( rd.ReadToEnd() );
+                wr.Write( Resources.map_file_begin );
 
                 wr.WriteLine( @"map.setView([{0}, {1}], 7);",
                     validator.Errors[ 0 ].lat.ToString().Replace( ',', '.' ),
@@ -226,7 +228,7 @@ namespace HouseNumberValidator
                         continue;
 
                     string popupText = String.Format(
-                        @"<a href=\""http://127.0.0.1:8111/load_object?objects={3}{1}\"" onClick=\""open_josm('{3}{1}');return false;\""><img src=icon_to_josm.png></a> "
+                        @"<a href=\""http://127.0.0.1:8111/load_object?objects={3}{1}\"" onClick=\""open_josm('{3}{1}');return false;\""><img src=icons/icon_to_josm.png></a> "
                         + @"<a href=\""http://osm.org/{0}/{1}\"">{2}</a><br>",
                         err.TypeString,
                         err.Osmid,
@@ -267,8 +269,7 @@ namespace HouseNumberValidator
                     allToJosm.Replace( "\"", "\\\"" )
                 );
 
-                using ( StreamReader rd = new StreamReader( Paths.FileIndexEnd ) )
-                    wr.Write( rd.ReadToEnd() );
+                wr.Write( Resources.map_file_end );
             }
 
         }
@@ -278,15 +279,12 @@ namespace HouseNumberValidator
             List<string> types = new List<string>{
                 "errors",
                 "warning",
-                "nostreet",
-                "names"
+                "nostreet"
             };
 
             foreach ( var type in types )
             {
-                string indexFile = Paths.DirOutMap + "RU." + type + ".map.html";
-                string indexBeinFile = @"D:\OSM\ValidatorTT\index_begin.html";
-                string indexEndFile = @"D:\OSM\ValidatorTT\index_end.html";
+                string outPath = Paths.DirOutMap + "RU." + type + ".map.html";
                 List<string> errors = new List<string>();
 
                 foreach ( var file in Directory.GetFiles( Paths.DirOutMap, "RU-*." + type + ".map.html" ) )
@@ -302,18 +300,16 @@ namespace HouseNumberValidator
                     }
                 }
                 errors = errors.Distinct().ToList();
-                using ( StreamWriter wr = new StreamWriter( indexFile ) )
+                using ( StreamWriter wr = new StreamWriter( outPath ) )
                 {
-                    using ( StreamReader rd = new StreamReader( indexBeinFile ) )
-                        wr.Write( rd.ReadToEnd() );
+                    wr.Write( Resources.map_file_begin );
 
                     wr.WriteLine( @"map.setView([61.0455502, 83.6036577], 4);" );
 
                     foreach ( var line in errors )
                         wr.WriteLine( line );
 
-                    using ( StreamReader rd = new StreamReader( indexEndFile ) )
-                        wr.Write( rd.ReadToEnd() );
+                    wr.Write( Resources.map_file_end );
                 }
             }
         }

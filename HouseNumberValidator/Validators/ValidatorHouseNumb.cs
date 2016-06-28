@@ -136,7 +136,12 @@ namespace HouseNumberValidator
                     hn.Description += " сооружение";
                     result += " соор" + fullRes.Groups[ 4 ].Value;
                 }
-                hn.Description += ". Надо: <b>" + result + "</b><br>";
+                if ( fullRes.Groups[ 5 ].Success )
+                {
+                    hn.Description += " литера";
+                    result += " лит" + fullRes.Groups[ 5 ].Value;
+                }
+                hn.Description += ". Надо: <b>" + result + "</b><br>";  
             }
             CorrectHouseNumb( hn.Value );
 
@@ -175,6 +180,11 @@ namespace HouseNumberValidator
                 {
                     //hn.Description += " сооружение";
                     result += " соор" + fullRes.Groups[ 4 ].Value;
+                }
+                if ( fullRes.Groups[ 5 ].Success )
+                {
+                    //hn.Description += " сооружение";
+                    result += " лит" + fullRes.Groups[ 5 ].Value;
                 }
                 //hn.Description += ". Надо: <b>" + result + "</b><br>";
             }

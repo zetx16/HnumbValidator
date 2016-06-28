@@ -16,8 +16,6 @@ namespace HouseNumberValidator
 
         static string fileReport      = @"Report.txt";
         static string fileReportXml   = @"Report.xml";
-        static string fileIndexBegin  = @"index_begin.html";
-        static string fileIndexEnd    = @"index_end.html";
 
         static string dirIn;
         static string dirOut;
@@ -32,8 +30,6 @@ namespace HouseNumberValidator
 
         public static string FileReport     { get { return fileReport; } }
         public static string FileReportXml  { get { return fileReportXml; } }
-        public static string FileIndexBegin { get { return fileIndexBegin; } }
-        public static string FileIndexEnd   { get { return fileIndexEnd; } }
 
         static Paths()
         {

@@ -14,8 +14,8 @@ namespace HouseNumberValidator
             FileEnd = "opendate";
             Title = "Дата открытия";
 
-            descriptionForList = "Строящиеся дороги у которых дата открытия прошла.<br>";
-            descriptionForMap = "Строящиеся дороги у которых дата открытия прошла.<br>";
+            descriptionForList = "Строящиеся объекты у которых дата открытия прошла.<br>";
+            descriptionForMap = "Строящиеся объекты у которых дата открытия прошла.<br>";
             errors = new List<Error>();
         }
 

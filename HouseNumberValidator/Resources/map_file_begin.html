@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../style/leaflet.css" />
+	<link rel="stylesheet" href="../style/MarkerCluster.css" />
+	<link rel="stylesheet" href="../style/MarkerCluster.Default.css" />
+	<link rel="stylesheet" href="../style/Map.css" />
+</head>
+<body>
+	<div id="map" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;"></div>
+	<img id=josm width=1 height=1 border=0 style='display:none' />
+	
+	<script src="../js/leaflet.js"></script>
+	<script src="../js/leaflet-hash.js"></script>
+	<script src="../js/leaflet.markercluster.js"></script>
+	<script src="../js/Map.js"></script>
+	<script>
+if (document.location.href.indexOf('#') == -1)

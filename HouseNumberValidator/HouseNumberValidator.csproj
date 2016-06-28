@@ -61,6 +61,11 @@
     <Compile Include="GeoCollections.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="StringExtension.cs" />
     <Compile Include="GeoCoord.cs" />
     <Compile Include="Paths.cs" />
@@ -87,6 +92,14 @@
   <ItemGroup>
     <Content Include="BackUpProgramCs.txt" />
     <Content Include="BackUpNewProgramCs.txt" />
+    <None Include="Resources\map_file_end.html" />
+    <None Include="Resources\map_file_begin.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
