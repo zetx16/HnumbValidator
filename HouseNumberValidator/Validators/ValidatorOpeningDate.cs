@@ -30,15 +30,17 @@ namespace HouseNumberValidator
                 if ( DateTime.TryParse( value, out opendate ) )
                 {
                     if ( opendate <= DateTime.Now )
-                        AddErrorToList( geo, value, "Дата открытия прошла" );
+                        AddErrorToList( geo, value, "Дата открытия прошла." );
+                    else if ( ( opendate - DateTime.Now ).Days < 7 )
+                        AddErrorToList( geo, value, "До открытия меньше недели." );
                 }
                 else if ( int.TryParse( value, out openyear ) )
                 {
                     if ( openyear <= DateTime.Now.Year )
-                        AddErrorToList( geo, value, "Дата открытия прошла" );
+                        AddErrorToList( geo, value, "Дата открытия прошла." );
                 }
                 else
-                    AddErrorToList( geo, value, "Дата не распознана" );
+                    AddErrorToList( geo, value, "Дата не распознана." );
             }
         }
 
