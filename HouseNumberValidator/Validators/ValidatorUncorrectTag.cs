@@ -18,8 +18,8 @@ namespace HouseNumberValidator
             FileEnd = "uncorrect";
             Title = "Не те теги";
 
-            descriptionForList = "";
-            descriptionForMap = "";
+            descriptionForList = "Определение типов объектов по названиям и отображение не достающих тегов";
+            descriptionForMap = "Определение типов объектов по названиям и отображение не достающих тегов";
 
             tags = new Dictionary<List<string>, Dictionary<string, string>>
             {
@@ -207,6 +207,11 @@ namespace HouseNumberValidator
                 }
             }
 
+        }
+
+        public override void ValidateEndReadFile()
+        {
+            errors = errors.OrderBy(x => x.Description).ThenByDescending(x => x.TimeStump).ToList();
         }
     }
 }

@@ -167,7 +167,7 @@ namespace HouseNumberValidator
         {
             XmlSerializer formatter = new XmlSerializer( typeof( StatRegionList ) );
 
-            using ( FileStream fs = new FileStream( Paths.FileReportXml, FileMode.OpenOrCreate ) )
+            using ( FileStream fs = new FileStream( Paths.FileReportXml, FileMode.Create ) )
                 formatter.Serialize( fs, RegionList );
         }
     }
