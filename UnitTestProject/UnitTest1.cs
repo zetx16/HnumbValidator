@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using HouseNumberValidator;
+using HnumbValidator;
 using System.Collections.Generic;
 
 namespace UnitTestProject

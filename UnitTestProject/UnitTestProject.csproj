@@ -54,7 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HouseNumberValidator\HouseNumberValidator.csproj">
+    <ProjectReference Include="..\HnumbValidator\HnumbValidator.csproj">
       <Project>{4a618bb7-292a-41ab-b955-efa51a0c025c}</Project>
       <Name>HouseNumberValidator</Name>
     </ProjectReference>
