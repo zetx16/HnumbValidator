@@ -18,8 +18,8 @@ namespace HnumbValidator
             FileEnd = "uncorrect";
             Title = "Не те теги";
 
-            descriptionForList = "Определение типов объектов по названиям и отображение недостающих тегов";
-            descriptionForMap = "Определение типов объектов по названиям и отображение недостающих тегов";
+            descriptionForList = "Определение типа объекта по названию и отображение недостающих тегов";
+            descriptionForMap = "Определение типа объекта по названию и отображение недостающих тегов";
 
             tags = new Dictionary<List<string>, Dictionary<string, string>>
             {
@@ -66,6 +66,36 @@ namespace HnumbValidator
                 },
                 {
                     new List<string>{
+                        "школа искусств",
+                        "школа исскуств",
+                        "школа художественная",
+                        "художественная школа"
+                    },
+                    new Dictionary<string,string>{
+                        { "amenity", "training" },
+                        { "training", "art" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "музыкальная школа"
+                    },
+                    new Dictionary<string,string>{
+                        { "amenity", "training" },
+                        { "training", "music" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "спортивная школа"
+                    },
+                    new Dictionary<string,string>{
+                        { "amenity", "training" },
+                        { "training", "sport" }
+                    }
+                },
+                {
+                    new List<string>{
                         "школа",
                         "сош"
                     },
@@ -94,6 +124,15 @@ namespace HnumbValidator
                 },
                 {
                     new List<string>{
+                        "министерство"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "government" },
+                        { "government", "ministry" }
+                    }
+                },
+                {
+                    new List<string>{
                         "нотариус",
                         "нотариальная"
                     },
@@ -113,6 +152,30 @@ namespace HnumbValidator
                 },
                 {
                     new List<string>{
+                        "налоговая"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "tax" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "центр занятости"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "employment_agency" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "нии"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "research" }
+                    }
+                },
+                {
+                    new List<string>{
                         "мэрия"
                     },
                     new Dictionary<string,string>{
@@ -122,7 +185,8 @@ namespace HnumbValidator
                 {
                     new List<string>{
                         "дк",
-                        "дом культуры"
+                        "дом культуры",
+                        "рдк"
                     },
                     new Dictionary<string,string>{
                         { "amenity", "community_centre" }
@@ -168,19 +232,11 @@ namespace HnumbValidator
                 },
                 {
                     new List<string>{
-                        "поликлиника"
-                    },
-                    new Dictionary<string,string>{
-                        { "amenity", "clinic" }
-                    }
-                },
-                {
-                    new List<string>{
                         "баня",
                         "сауна"
                     },
                     new Dictionary<string,string>{
-                        { "amenity", "sauna" }
+                        { "leisure", "sauna" }
                     }
                 }
             };
@@ -194,16 +250,24 @@ namespace HnumbValidator
 
             foreach (var keyvalue in tags)
             {
-                if ( value.ContainsOneOf( keyvalue.Key ) )
+                if ( value.ToLower().ContainsOneOf( keyvalue.Key ) )
                 {
+                    if (geo.Tags.ContainsKeyValue("public_transport", "platform") ||
+                        geo.Tags.ContainsKeyValue("highway", "bus_stop") ||
+                        geo.Tags.ContainsKeyValue("public_transport", "stop_position") ||
+                        geo.Tags.ContainsKeyValue("type", "route") ||
+                        geo.Tags.ContainsKeyValue("type", "route_master"))
+                        return;
+
                     var error = new Error( geo, value );
                     foreach ( var tag in keyvalue.Value )
                         if ( !geo.Tags.ContainsKeyValue( tag.Key, tag.Value ) )
                             error.Description += tag.Key + " = " + tag.Value + "<br>";
+
                     if ( !error.Description.IsEmpty() )
-                    {
                         errors.Add( error );
-                    }
+
+                    return;
                 }
             }
 

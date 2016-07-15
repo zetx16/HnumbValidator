@@ -22,14 +22,18 @@ namespace HnumbValidator
         {
             bool result = false;
             var strsplit = str.Split( new char[] { ' ', ',', '.' }, StringSplitOptions.RemoveEmptyEntries );
-            foreach ( var word in words )
-                if ( word.IndexOf( ' ' ) >= 0 )
-                    if ( str.IndexOf( word, StringComparison.CurrentCultureIgnoreCase ) >= 0 )
+            foreach (var word in words)
+            {
+                if (word.IndexOf(' ') >= 0)
+                {
+                    if (str.IndexOf(word, StringComparison.CurrentCultureIgnoreCase) >= 0)
                         result = true;
-                    else
-                        foreach ( var strword in strsplit )
-                            if ( strword.IndexOf( word, StringComparison.CurrentCultureIgnoreCase ) >= 0 )
-                                result = true;
+                }
+                else
+                    foreach (var strword in strsplit)
+                        if (strword == word)
+                            result = true;
+            }
             return result;
         }
     }

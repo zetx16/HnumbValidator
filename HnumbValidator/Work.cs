@@ -89,7 +89,7 @@ namespace HnumbValidator
 #if DEBUG
                 stw.Stop();
                 using ( StreamWriter wr = new StreamWriter( "log_speed.txt", true ) )
-                    wr.WriteLine( "{0:dd.MM.yyyy}\t{1}\t{2}", file.LastWriteTime, region, stw.Elapsed );
+                    wr.WriteLine( "{0:dd.MM.yyyy}\t{1}\t{2}", DateTime.Now, region, stw.Elapsed );
 #endif
 
                 WriteReports( region, file.LastWriteTime );
@@ -132,7 +132,7 @@ namespace HnumbValidator
 #if DEBUG
                 stw.Stop();
                 using ( StreamWriter wr = new StreamWriter( "log_speed.txt", true ) )
-                    wr.WriteLine( "{0:dd.MM.yyyy}\t{1}\t{2}", file.LastWriteTime, region, stw.Elapsed );
+                    wr.WriteLine( "{0:dd.MM.yyyy}\t{1}\t{2}", DateTime.Now, region, stw.Elapsed );
 #endif
 
 
