@@ -256,7 +256,8 @@ namespace HnumbValidator
                         geo.Tags.ContainsKeyValue("highway", "bus_stop") ||
                         geo.Tags.ContainsKeyValue("public_transport", "stop_position") ||
                         geo.Tags.ContainsKeyValue("type", "route") ||
-                        geo.Tags.ContainsKeyValue("type", "route_master"))
+                        geo.Tags.ContainsKeyValue("type", "route_master") ||
+                        geo.Tags.ContainsKeyValue("type", "public_transport"))
                         return;
 
                     var error = new Error( geo, value );
