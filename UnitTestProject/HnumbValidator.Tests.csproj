@@ -6,8 +6,8 @@
     <ProjectGuid>{4F661DCD-80A4-44C8-B968-FD59530239D1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitTestProject</RootNamespace>
-    <AssemblyName>UnitTestProject</AssemblyName>
+    <RootNamespace>HnumbValidator.Tests</RootNamespace>
+    <AssemblyName>HnumbValidator.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -50,13 +50,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="ValidatorHouseNumbTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HnumbValidator\HnumbValidator.csproj">
       <Project>{4a618bb7-292a-41ab-b955-efa51a0c025c}</Project>
-      <Name>HouseNumberValidator</Name>
+      <Name>HnumbValidator</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

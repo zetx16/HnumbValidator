@@ -70,10 +70,11 @@ namespace HnumbValidator
             string stroen = @"(?: с[0-9А-Я]+)?";
             string sooryz = @"(?: соор[0-9А-Я]+)?";
             string litera = @"(?: лит[0-9А-Я]+)?";
+            string fligel = @"(?: ф[0-9А-Я]+)?";
 
             numbPattern = @"(?:вл)?[0-9]+[А-Яа-я]?";
             numbPattern += @"(?:/[0-9]+[А-Яа-я]?)?";
-            numbPattern += korpus + stroen + sooryz + litera;
+            numbPattern += korpus + stroen + sooryz + litera + fligel;
             numb = new Regex( numbPattern, RegexOptions.Compiled );
 
             defisPattern = @"[0-9]+-[0-9]+";//(?:-[0-9]+)?";
@@ -126,16 +127,18 @@ namespace HnumbValidator
             string stroen2 = @"[сc]т?р?о?е?н?и?е?[\. ]*";
             string sooryz2 = @"соору?ж?е?н?и?е?[\. ]*";
             string litera2 = @"лит?е?р?а?[\. ]*";
+            string fligel2 = @"фл?и?г?е?л?ь?[\. ]*";
             string numb2 = @"[0-9А-Я]+";
             string word2 = @"[А-Я]+";
 
-            full2Pattern = String.Format( @"д?\.? ?([0-9]+(?:(?:(?!{0}{4}|{1}{4}|{2}{4}|{3}{5}))[А-Яа-я])?)(?:,? ?{0}({4}))?(?:,? ?{1}({4}))?(?:,? ?{2}({4}))?(?:,? ?{3}({5}))?",
+            full2Pattern = String.Format(@"д?\.? ?([0-9]+(?:(?:(?!{2}{0}|{3}{0}|{4}{0}|{5}{1}|{6}{0}))[А-Яа-я])?)(?:,? ?{2}({0}))?(?:,? ?{3}({0}))?(?:,? ?{4}({0}))?(?:,? ?{5}({1}))?(?:,? ?{6}({0}))?",
+                numb2,
+                word2,
                 korpus2,
                 stroen2,
                 sooryz2,
                 litera2,
-                numb2,
-                word2
+                fligel2
             );
             full2 = new Regex( full2Pattern, RegexOptions.Compiled );
 

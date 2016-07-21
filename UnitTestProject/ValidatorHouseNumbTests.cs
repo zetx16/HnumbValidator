@@ -3,13 +3,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HnumbValidator;
 using System.Collections.Generic;
 
-namespace UnitTestProject
+namespace HnumbValidator.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class ValidatorHouseNumbTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void CorrectHouseNumbTest()
         {
             ValidatorHouseNumb v = new ValidatorHouseNumb();
             Dictionary<string, string> tests = new Dictionary<string, string>{
@@ -22,7 +22,9 @@ namespace UnitTestProject
                 { "12а, к.1", "12А к1" },
                 { "д. 12а, к.1", "12А к1" },
                 { "д. 53, корп. 1, лит. А", "53 к1 литА" },
-                { "5 к1 лит Т", "5 к1 литТ" }
+                { "5 к1 лит Т", "5 к1 литТ" },
+                { "5 к1 ф.2", "5 к1 ф2" },
+                { "5 фл 1", "5 ф1" }
             };
 
             foreach ( var test in tests )

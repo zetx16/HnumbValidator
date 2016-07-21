@@ -141,6 +141,11 @@ namespace HnumbValidator
                     hn.Description += " литера";
                     result += " лит" + fullRes.Groups[ 5 ].Value;
                 }
+                if ( fullRes.Groups[ 6 ].Success )
+                {
+                    hn.Description += " флигель";
+                    result += " ф" + fullRes.Groups[ 6 ].Value;
+                }
                 hn.Description += ". Надо: <b>" + result + "</b><br>";  
             }
             CorrectHouseNumb( hn.Value );
@@ -156,8 +161,6 @@ namespace HnumbValidator
             {
                 if ( fullRes.Groups[ 1 ].Success )
                 {
-                    //hn.Description += "Неверно обозначено:";
-
                     Match downRes = Regexes.down.Match( fullRes.Groups[ 1 ].Value );
                     if ( downRes.Success && downRes.Groups[ 1 ].Length + downRes.Groups[ 2 ].Length == fullRes.Groups[ 1 ].Value.Length )
                     {
@@ -168,25 +171,24 @@ namespace HnumbValidator
                 }
                 if ( fullRes.Groups[ 2 ].Success )
                 {
-                    //hn.Description += " корпус";
                     result += " к" + fullRes.Groups[ 2 ].Value;
                 }
                 if ( fullRes.Groups[ 3 ].Success )
                 {
-                    //hn.Description += " строение";
                     result += " с" + fullRes.Groups[ 3 ].Value;
                 }
                 if ( fullRes.Groups[ 4 ].Success )
                 {
-                    //hn.Description += " сооружение";
                     result += " соор" + fullRes.Groups[ 4 ].Value;
                 }
                 if ( fullRes.Groups[ 5 ].Success )
                 {
-                    //hn.Description += " сооружение";
                     result += " лит" + fullRes.Groups[ 5 ].Value;
                 }
-                //hn.Description += ". Надо: <b>" + result + "</b><br>";
+                if ( fullRes.Groups[ 6 ].Success )
+                {
+                    result += " ф" + fullRes.Groups[ 6 ].Value;
+                }
             }
             return result;
         }

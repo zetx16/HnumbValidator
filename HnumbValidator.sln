@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HnumbValidator", "HnumbValidator\HnumbValidator.csproj", "{4A618BB7-292A-41AB-B955-EFA51A0C025C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject", "UnitTestProject\UnitTestProject.csproj", "{4F661DCD-80A4-44C8-B968-FD59530239D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HnumbValidator.Tests", "UnitTestProject\HnumbValidator.Tests.csproj", "{4F661DCD-80A4-44C8-B968-FD59530239D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
