@@ -52,7 +52,7 @@ namespace HnumbValidator
 
         private bool ValidateHouseNumbOnWarn( Error hn )
         {
-            Match downRes = Regexes.down.Match( hn.Value );
+            Match downRes = Regexes.low.Match( hn.Value );
             if ( downRes.Success && downRes.Length == hn.Value.Length )
             {
                 hn.Description += "После номера должна быть заглавная буква: ";
@@ -91,65 +91,11 @@ namespace HnumbValidator
 
             if ( Regexes.CheckPattern( Regexes.space, hn.Value ) )
                 hn.Description += "Пробел между номером и буквой, надо: " + Regexes.space.Replace( hn.Value, Regexes.spaceReplace ).ToUpper() + "<br>";
-
-            //------------------------------------------
-            /*
-            if ( Regexes.CheckPattern( Regexes.korp, hn.Value ) )
-                hn.Description += "Неверно обозначен корпус, надо: " + Regexes.korp.Replace( hn.Value, Regexes.korpReplace ) + "<br>";
-
-            if ( Regexes.CheckPattern( Regexes.stroy, hn.Value ) )
-                hn.Description += "Неверно обозначено строение, надо: " + Regexes.stroy.Replace( hn.Value, Regexes.stroyReplace ) + "<br>";
-
-            if ( Regexes.CheckPattern( Regexes.soor, hn.Value ) )
-                hn.Description += "Неверно обозначено сооружение, надо: " + Regexes.soor.Replace( hn.Value, Regexes.soorReplace ) + "<br>";
-            */
-            //------------------------------------------
-
-            Match fullRes = Regexes.full2.Match( hn.Value );
-            if ( fullRes.Success && fullRes.Length == hn.Value.Length )
-            {
-                string result = "";
-                if ( fullRes.Groups[ 1 ].Success )
-                {
-                    hn.Description += "Неверно обозначено:";
-
-                    Match downRes = Regexes.down.Match( fullRes.Groups[ 1 ].Value );
-                    if ( downRes.Success && downRes.Groups[ 1 ].Length + downRes.Groups[ 2 ].Length == fullRes.Groups[ 1 ].Value.Length )
-                    {
-                        result += downRes.Groups[ 1 ].Value + downRes.Groups[ 2 ].Value.ToUpper()/* + downRes.Groups[ 3 ]*/;
-                    }
-                    else
-                        result += fullRes.Groups[ 1 ].Value;
-                }
-                if ( fullRes.Groups[ 2 ].Success )
-                {
-                    hn.Description += " корпус";
-                    result += " к" + fullRes.Groups[ 2 ].Value;
-                }
-                if ( fullRes.Groups[ 3 ].Success )
-                {
-                    hn.Description += " строение";
-                    result += " с" + fullRes.Groups[ 3 ].Value;
-                }
-                if ( fullRes.Groups[ 4 ].Success )
-                {
-                    hn.Description += " сооружение";
-                    result += " соор" + fullRes.Groups[ 4 ].Value;
-                }
-                if ( fullRes.Groups[ 5 ].Success )
-                {
-                    hn.Description += " литера";
-                    result += " лит" + fullRes.Groups[ 5 ].Value;
-                }
-                if ( fullRes.Groups[ 6 ].Success )
-                {
-                    hn.Description += " флигель";
-                    result += " ф" + fullRes.Groups[ 6 ].Value;
-                }
-                hn.Description += ". Надо: <b>" + result + "</b><br>";  
-            }
-            CorrectHouseNumb( hn.Value );
-
+            
+            string correct = CorrectHouseNumb( hn.Value );
+            if(!correct.IsEmpty())
+                hn.Description += "Надо: <b>" + correct + "</b><br>";
+            
             return false;
         }
 
@@ -161,10 +107,10 @@ namespace HnumbValidator
             {
                 if ( fullRes.Groups[ 1 ].Success )
                 {
-                    Match downRes = Regexes.down.Match( fullRes.Groups[ 1 ].Value );
+                    Match downRes = Regexes.low.Match( fullRes.Groups[ 1 ].Value );
                     if ( downRes.Success && downRes.Groups[ 1 ].Length + downRes.Groups[ 2 ].Length == fullRes.Groups[ 1 ].Value.Length )
                     {
-                        result += downRes.Groups[ 1 ].Value + downRes.Groups[ 2 ].Value.ToUpper()/* + downRes.Groups[ 3 ]*/;
+                        result += downRes.Groups[ 1 ].Value + downRes.Groups[ 2 ].Value.ToUpper();
                     }
                     else
                         result += fullRes.Groups[ 1 ].Value;

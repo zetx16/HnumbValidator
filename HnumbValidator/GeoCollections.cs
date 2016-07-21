@@ -92,11 +92,13 @@ namespace HnumbValidator
                     result += "<b>FixMe:</b> " + tag.Value + "<br>";
                     continue;
                 }
+                /*
                 if ( tag.Key == "description" )
                 {
                     result += "<b>Description:</b> " + tag.Value + "<br>";
                     continue;
                 }
+                */
             }
             return result;
         }

@@ -33,21 +33,9 @@ namespace HnumbValidator
         private static string latinPattern;
         public static Regex latin;
         
-        private static string korpPattern;
-        public static string korpReplace;
-        public static Regex korp;
-        
-        private static string stroyPattern;
-        public static string stroyReplace;
-        public static Regex stroy;
-        
         private static string spacePattern;
         public static string spaceReplace;
         public static Regex space;
-        
-        private static string soorPattern;
-        public static string soorReplace;
-        public static Regex soor;
 
         private static string fullPattern;
         //public static string fullReplace;
@@ -57,8 +45,8 @@ namespace HnumbValidator
         //public static string fullReplace;
         public static Regex full2;
 
-        private static string downPattern;
-        public static Regex down;
+        private static string lowPattern;
+        public static Regex low;
 
 
         private static string flatPattern;
@@ -99,22 +87,7 @@ namespace HnumbValidator
 
             latinPattern = @"[A-Za-z]";
             latin = new Regex( latinPattern, RegexOptions.Compiled );
-
-
-
-            korpPattern = @"([0-9]+[А-Яа-я]?) ?[кК]о?р?п?у?с?[. ]*([0-9А-Я]+)";
-            korpReplace = @"$1 к$2";
-            korp = new Regex( korpPattern, RegexOptions.Compiled );
-
-            stroyPattern = @"([0-9]+[А-Яа-я]?(?: ?[кК][0-9А-Я]+)?) ?[сc]т?р?о?е?н?и?е?[. ]*([0-9А-Я]+)";
-            stroyReplace = @"$1 с$2";
-            stroy = new Regex( stroyPattern, RegexOptions.Compiled );
-
-            soorPattern = @"([0-9]+[А-Яа-я]?(?: ?[кК][0-9А-Я]+)?(?: ?[с][0-9А-Я]+)?)";
-            soorPattern += @" ?соору?ж?е?н?и?е?[. ]*([0-9]+[А-Я]?)";
-            soorReplace = @"$1 соор$2";
-            soor = new Regex( soorPattern, RegexOptions.Compiled );
-
+            
             spacePattern = @"([0-9]+) ([А-Яа-я])";
             spaceReplace = @"$1$2";
             space = new Regex( spacePattern, RegexOptions.Compiled );
@@ -143,8 +116,8 @@ namespace HnumbValidator
             full2 = new Regex( full2Pattern, RegexOptions.Compiled );
 
 
-            downPattern = @"([0-9]+)([а-жи-нп-я])(\s.*)?";
-            down = new Regex( downPattern, RegexOptions.Compiled );
+            lowPattern = @"([0-9]+)([а-жи-нп-я])(\s.*)?";
+            low = new Regex( lowPattern, RegexOptions.Compiled );
 
 
             flatPattern = @"[0-9]+[А-Я]?(?:(?:; ?|-)[0-9]+[А-Я]?)*";
