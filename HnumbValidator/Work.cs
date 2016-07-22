@@ -216,8 +216,7 @@ namespace HnumbValidator
                 files.Add(           region + "." + validator + ".html" );
                 files.Add( @"map/" + region + "." + validator + ".map.html" );
             }
-
-            files.Add( "v.html" );
+            
             files.Add( "index.html" );
 
 
