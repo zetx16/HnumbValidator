@@ -105,6 +105,24 @@ namespace HnumbValidator
                 },
                 {
                     new List<string>{
+                        "нпф",
+                        "негосударственный пенсионный"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "pension_fund" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "пенсионный"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "government" },
+                        { "government", "pension_fund" }
+                    }
+                },
+                {
+                    new List<string>{
                         "загс"
                     },
                     new Dictionary<string,string>{
@@ -176,6 +194,22 @@ namespace HnumbValidator
                 },
                 {
                     new List<string>{
+                        "водоканал"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "water_utility" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "суд"
+                    },
+                    new Dictionary<string,string>{
+                        { "amenity", "courthouse" }
+                    }
+                },
+                {
+                    new List<string>{
                         "мэрия"
                     },
                     new Dictionary<string,string>{
@@ -237,6 +271,24 @@ namespace HnumbValidator
                     },
                     new Dictionary<string,string>{
                         { "leisure", "sauna" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "спортивный центр",
+                        "спортивный комплекс"
+                    },
+                    new Dictionary<string,string>{
+                        { "leisure", "sports_centre" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "военкомат",
+                        "военный комиссариат"
+                    },
+                    new Dictionary<string,string>{
+                        { "military", "office" }
                     }
                 }
             };
