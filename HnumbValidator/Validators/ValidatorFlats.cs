@@ -15,9 +15,8 @@ namespace HnumbValidator
             Title = "Квартиры";
 
             descriptionForList = "Не правильно обозначенные номера квартир в подъезде.<br>"
-                + "Правильный формат записи addr:flats=3-7;10;14;16-18<br>";
-            descriptionForMap = "Не правильно обозначенные номера квартир в подъезде.<br>"
-                + "Правильный формат записи addr:flats=3-7;10;14;16-18<br>";
+                + "Правильный формат записи addr:flats=3-7;10;14;16-18";
+            descriptionForMap = descriptionForList;
             errors = new List<Error>();
         }
 

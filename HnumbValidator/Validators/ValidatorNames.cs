@@ -50,27 +50,19 @@ namespace HnumbValidator
             Title = "Нет тега";
 
             errors = new List<Error>();
-
-            descriptionForList = "Список объектов с тегом name, у которых нет ни одного из данных тегов: ";
+            
             descriptionForMap = "Объекты с тегом name, у которых нет ни одного из данных тегов: ";
 
             foreach ( var key in keys.OrderBy( x => x ).ToList() )
-            {
-                descriptionForList += key + ", ";
                 descriptionForMap += key + ", ";
-            }
-            foreach ( var tag in tags.OrderBy( x => x.Value ).ToList() )
-            {
-                descriptionForList += tag.Value + "=" + tag.Key + ", ";
-                descriptionForMap += tag.Value + "=" + tag.Key + ", ";
-            }
 
-            descriptionForList = descriptionForList.TrimEnd( new char[] { ',', ' ' } );
+            foreach ( var tag in tags.OrderBy( x => x.Value ).ToList() )
+                descriptionForMap += tag.Value + "=" + tag.Key + ", ";
+            
             descriptionForMap = descriptionForMap.TrimEnd( new char[] { ',', ' ' } );
-            descriptionForList += ".<br>"
-                + "Например: есть объект с name=\"Школа №2\", но нет тега amenity=school.<br>"
-                + "В колонке с дополнительной информацией перечислены все ключи данного объкта.<br>";
             descriptionForMap += ".<br>" + "Например: есть объект с name=\"Школа №2\", но нет тега amenity=school.<br>";
+
+            descriptionForList = descriptionForMap + "В колонке с дополнительной информацией перечислены все ключи данного объкта.";
         }
 
         public override void ValidateObject(OsmGeo geo)

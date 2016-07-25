@@ -21,7 +21,7 @@ namespace HnumbValidator
             FileEnd = "double";
             Title = "Дублирование";
             descriptionForList = "Дублирования тега amenity=school и amenity=kindergarten, т.е. когда тег висит и на территории и на здании.";
-            descriptionForMap = "Дублирования тега amenity=school и amenity=kindergarten, т.е. когда тег висит и на территории и на здании.<br><br>"
+            descriptionForMap = descriptionForList + "<br><br>"
                             + @"<div class=""info-colour"" style=""background-color:#f60;""></div> - школы<br>"
                             + @"<div class=""info-colour"" style=""background-color:orange;""></div> - детские сады<br>";
 

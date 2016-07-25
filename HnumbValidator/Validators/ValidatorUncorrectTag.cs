@@ -18,7 +18,7 @@ namespace HnumbValidator
             FileEnd = "uncorrect";
             Title = "Не те теги";
 
-            descriptionForList = "Определение типа объекта по названию и отображение недостающих тегов";
+            descriptionForList = "Определение типа объекта по названию и отображение недостающих тегов.";
             descriptionForMap = descriptionForList;
 
             tags = new Dictionary<List<string>, Dictionary<string, string>>

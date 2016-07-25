@@ -14,8 +14,8 @@ namespace HnumbValidator
             FileEnd = "opendate";
             Title = "Дата открытия";
 
-            descriptionForList = "Строящиеся объекты у которых дата открытия прошла.<br>";
-            descriptionForMap = "Строящиеся объекты у которых дата открытия прошла.<br>";
+            descriptionForList = "Строящиеся объекты у которых дата открытия прошла.";
+            descriptionForMap = descriptionForList;
             errors = new List<Error>();
         }
 

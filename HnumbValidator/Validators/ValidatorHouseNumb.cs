@@ -15,7 +15,7 @@ namespace HnumbValidator
             FileEnd = "errors";
             Title = "Ошибки";
             descriptionForList = "Номера домов не соответствующие принятой схеме.";
-            descriptionForMap = "Номера домов не соответствующие принятой схеме.";
+            descriptionForMap = descriptionForList;
 
             errors = new List<Error>();
         }

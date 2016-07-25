@@ -16,8 +16,8 @@ namespace HnumbValidator
             FileEnd = "nostreet";
             Title = "Нет улицы";
 
-            descriptionForList = @"Список номеров домов без ""addr:street"" и ""addr:place""<br>";
-            descriptionForMap = @"Адреса без ""addr:street"" и ""addr:place""<br><br>"
+            descriptionForList = @"Адреса без ""addr:street"" и ""addr:place""";
+            descriptionForMap = descriptionForList + "<br><br>"
                         + @"<div class=""info-colour"" style=""background-color:orange;""></div> - есть ""addr:city"" или ""addr:suburb""<br>";
 
             errors = new List<Error>();
