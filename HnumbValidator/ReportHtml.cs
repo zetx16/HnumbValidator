@@ -20,7 +20,7 @@ namespace HnumbValidator
             {
                 fw.WriteLine( @"<html><head>" );
                 fw.WriteLine( @"<title>Валидатор номеров домов</title>" );
-                fw.WriteLine( @"<link rel=""stylesheet"" href=""style/style.css"" />" );
+                fw.WriteLine( @"<link rel=""stylesheet"" href=""style/List.css"" />" );
                 fw.WriteLine( @"</style></head>" );
 
                 fw.WriteLine( @"<body>" );
@@ -31,7 +31,10 @@ namespace HnumbValidator
                 fw.WriteLine( @"<a href=""http://wiki.openstreetmap.org/wiki/RU:Валидаторы"">Другие валидаторы</a>" );
                 fw.Write( @" | " );
                 fw.WriteLine( @"<a href=""download"">Скачать</a>" );
-                fw.Write( @"<br><br>" );
+                fw.WriteLine( @"<br>" );
+
+                fw.WriteLine( @"<p class=""description warn"">Не мапьте под валидатор!</p>" );
+
                 fw.WriteLine( @"<table>" );
                 fw.Write( @"<tr>" );
                 fw.Write( @"<td><b>Регион</b></td>" );

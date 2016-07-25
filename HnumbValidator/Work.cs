@@ -56,13 +56,54 @@ namespace HnumbValidator
 
             return result;
         }
+        /*
+        public void ReadFiles2( string[] regions )
+        {
+            string typefile = ".osm.pbf";
+            WebClient webClient = new WebClient();
 
+            if ( !Directory.Exists( Paths.DirOut ) )
+                Directory.CreateDirectory( Paths.DirOut );
+
+            if ( Options.DownloadFromGislab )
+                if ( regions == null )
+                    regions = GetDownFiles( 5 );
+                else
+                    regions = Directory.GetFiles( Paths.DirIn, "*" + typefile );
+
+
+            foreach ( string region in regions )
+            {
+                if ( Options.DownloadFromGislab )
+                {
+                    Console.CursorLeft = 0;
+                    Console.Write( "Download {0}", region );
+
+                    webClient.DownloadFile( @"http://data.gis-lab.info/osm_dump/dump/latest/" + region + typefile,
+                        Paths.DirIn + region + typefile + ".down" );
+                    File.Delete( Paths.DirIn + region + typefile );
+                    File.Move( Paths.DirIn + region + typefile + ".down", Paths.DirIn + region + typefile );
+
+                    FileInfo file = new FileInfo( Paths.DirIn + region + typefile );
+                }
+                else
+                {
+                    FileInfo file = new FileInfo( region );
+                    string region2 = file.Name.Split( '.' )[ 0 ];
+                    //DateTime stump = Reports.GetRegion( region ).Stamp;
+
+
+                    if ( regions != null && regions.Length > 0 && !regions.Contains( region ) )
+                        continue;
+                }
+            }
+        }
+        */
         public void DownloadFiles( string[] regions )
         {
             if ( regions == null )
                 regions = GetDownFiles( 5 );
-            //string[] regions = { /* "RU-TVE", "RU-RYA", "RU-SAM", "RU-AD", "RU-AL", "RU-ALT", "RU-AMU", */"RU-KYA" };
-
+            
             string typefile = ".osm.pbf";
             WebClient webClient = new WebClient();
 

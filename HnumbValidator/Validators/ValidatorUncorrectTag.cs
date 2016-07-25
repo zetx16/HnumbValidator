@@ -19,7 +19,7 @@ namespace HnumbValidator
             Title = "Не те теги";
 
             descriptionForList = "Определение типа объекта по названию и отображение недостающих тегов";
-            descriptionForMap = "Определение типа объекта по названию и отображение недостающих тегов";
+            descriptionForMap = descriptionForList;
 
             tags = new Dictionary<List<string>, Dictionary<string, string>>
             {
@@ -151,6 +151,42 @@ namespace HnumbValidator
                 },
                 {
                     new List<string>{
+                        "центр занятости"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "government" },
+                        { "government", "recruitment" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "налоговая"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "government" },
+                        { "government", "tax" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "отдел образования"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "government" },
+                        { "government", "education" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "миграционная"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "government" },
+                        { "government", "migration" }
+                    }
+                },
+                {
+                    new List<string>{
                         "нотариус",
                         "нотариальная"
                     },
@@ -166,22 +202,6 @@ namespace HnumbValidator
                     new Dictionary<string,string>{
                         { "office", "lawyer" },
                         { "lawyer", "advocate" }
-                    }
-                },
-                {
-                    new List<string>{
-                        "налоговая"
-                    },
-                    new Dictionary<string,string>{
-                        { "office", "tax" }
-                    }
-                },
-                {
-                    new List<string>{
-                        "центр занятости"
-                    },
-                    new Dictionary<string,string>{
-                        { "office", "employment_agency" }
                     }
                 },
                 {
@@ -276,7 +296,8 @@ namespace HnumbValidator
                 {
                     new List<string>{
                         "спортивный центр",
-                        "спортивный комплекс"
+                        "спортивный комплекс",
+                        "спорткомплекс"
                     },
                     new Dictionary<string,string>{
                         { "leisure", "sports_centre" }
@@ -285,7 +306,9 @@ namespace HnumbValidator
                 {
                     new List<string>{
                         "военкомат",
-                        "военный комиссариат"
+                        "военком",
+                        "военный комиссариат",
+                        "военного комиссариата"
                     },
                     new Dictionary<string,string>{
                         { "military", "office" }
