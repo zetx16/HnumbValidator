@@ -230,14 +230,18 @@ namespace HnumbValidator
                     if ( err.lat == 0 )
                         continue;
 
-                    string popupText = String.Format(
-                        @"<a href=\""http://127.0.0.1:8111/load_object?objects={3}{1}\"" onClick=\""open_josm('{3}{1}');return false;\""><img src=../icons/icon_to_josm.png></a> "
-                        + @"<a href=\""http://osm.org/{0}/{1}\"">{2}</a><br>",
+                    string popupText = String.Format( @"<div class=""popup popup-edit"">"
+                        + @"<a href=""http://127.0.0.1:8111/load_object?objects={3}{1}"" onClick=""open_josm('{3}{1}');return false;""><img src=../icons/icon_to_josm.png></a> "
+                        + @"<a href=""http://level0.osmz.ru/?url={0}{1}""><img src=../icons/icon_to_level0.png></a>"
+                        + @"</div><div class=""popup popup-link"">"
+                        + @"<a href=""http://osm.org/{0}/{1}"">{2}</a><br>"
+                        + @"</div><div class=""popup popup-description"">{4}</div>",
                         err.TypeString,
                         err.Osmid,
-                        err.Value == "" ? "[osm]" : err.Value.Replace( "\\", "\\\\" ).Replace( "\"", "\\\"" ),
-                        err.TypeStringShort
-                        );
+                        err.Value == "" ? "[osm]" : err.Value,
+                        err.TypeStringShort,
+                        err.Description
+                    ).Replace( "\\", "\\\\" ).Replace( "\"", "\\\"" );
 
                     string icon;
                     switch ( err.Level )
