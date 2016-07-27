@@ -133,7 +133,7 @@ namespace HnumbValidator
                 }
                 if ( fullRes.Groups[ 6 ].Success )
                 {
-                    result += " ф" + fullRes.Groups[ 6 ].Value;
+                    result += " фл" + fullRes.Groups[ 6 ].Value;
                 }
             }
             return result;

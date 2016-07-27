@@ -58,7 +58,7 @@ namespace HnumbValidator
             string stroen = @"(?: с[0-9А-Я]+)?";
             string sooryz = @"(?: соор[0-9А-Я]+)?";
             string litera = @"(?: лит[0-9А-Я]+)?";
-            string fligel = @"(?: ф[0-9А-Я]+)?";
+            string fligel = @"(?: фл[0-9А-Я]+)?";
 
             numbPattern = @"(?:вл)?[0-9]+[А-Яа-я]?";
             numbPattern += @"(?:/[0-9]+[А-Яа-я]?)?";
