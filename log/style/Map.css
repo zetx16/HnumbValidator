@@ -16,6 +16,12 @@ IMG {
 	vertical-align:middle;
 	border:0;
 }
+A{
+	text-decoration: none;
+}
+A:hover {
+    text-decoration: underline;
+}
 .leaflet-popup-content-wrapper {
 	border-radius: 5px;
 }
@@ -47,4 +53,14 @@ IMG {
 P {
 	margin:0;
 	line-height:1.5;
+}
+.popup {
+	text-align: center;
+}
+.popup-link {
+	font-size: 14px;
+	margin-top: 7px;
+}
+.popup-description {
+	margin-top: 7px;
 }
