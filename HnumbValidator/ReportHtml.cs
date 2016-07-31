@@ -191,7 +191,7 @@ namespace HnumbValidator
                         + @"&nbsp;<a href=""http://level0.osmz.ru/?url={0}{1}""><img src=icons/icon_to_level0.png></a></td>",
                         err.TypeStringShort, err.Osmid );
                     fw.Write( @"<td><a href=""http://osm.org/{0}/{1}"">{2}</a></td>", 
-                        err.TypeString, err.Osmid, err.Value );
+                        err.TypeString, err.Osmid, err.Value == "" ? "[osm]" : err.Value );
                     fw.Write( @"<td>" + err.Description + @"</td>" );
                     fw.Write( @"</tr>" );
                     fw.WriteLine();
