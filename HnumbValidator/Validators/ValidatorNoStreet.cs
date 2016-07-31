@@ -49,6 +49,10 @@ namespace HnumbValidator
                         nostreet.Description += "  |  " + "<font color=\"gray\">suburb: </font>" + city;
                     else
                         nostreet.Description += "<font color=\"gray\">suburb: </font>" + city;
+
+                if ( nostreet.Description != string.Empty )
+                    nostreet.Level = ErrorLevel.Level5;
+
                 errors.Add( nostreet );
             }
         }

@@ -251,13 +251,6 @@ namespace HnumbValidator
                         default: icon = "iErr"; break;
                     }
 
-                    if ( nostreet && err.Description != string.Empty )
-                    {
-                        foreach ( var place in err.Description.Split( '|' ) )
-                            popupText += place.Replace( ":", " =" ).Replace( "\"", "\\\"" ).Trim();
-                        icon = "iWarn";
-                    }
-
                     wr.WriteLine( string.Format( @"L.marker([{0}, {1}],{{icon: {4}}}).addTo({2}).bindPopup(""{3}"");",
                         err.lat.ToString().Replace( ',', '.' ),
                         err.lon.ToString().Replace( ',', '.' ),
