@@ -66,6 +66,15 @@ namespace HnumbValidator
                 },
                 {
                     new List<string>{
+                        "колледж",
+                        "техникум"
+                    },
+                    new Dictionary<string,string>{
+                        { "amenity", "college" }
+                    }
+                },
+                {
+                    new List<string>{
                         "школа искусств",
                         "школа исскуств",
                         "школа художественная",
@@ -105,7 +114,6 @@ namespace HnumbValidator
                 },
                 {
                     new List<string>{
-                        "нпф",
                         "негосударственный пенсионный"
                     },
                     new Dictionary<string,string>{
@@ -214,10 +222,27 @@ namespace HnumbValidator
                 },
                 {
                     new List<string>{
+                        "редакция газеты"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "newspaper" }
+                    }
+                },
+                {
+                    new List<string>{
                         "водоканал"
                     },
                     new Dictionary<string,string>{
                         { "office", "water_utility" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "театр",
+                        "тюз"
+                    },
+                    new Dictionary<string,string>{
+                        { "amenity", "theatre" }
                     }
                 },
                 {
