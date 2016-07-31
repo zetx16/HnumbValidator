@@ -59,7 +59,7 @@ namespace HnumbValidator
         {
             ValidateSchool();
             ValidateKindergarten();
-            errors.OrderBy( x => x.lat ).ToList();
+            base.ValidateEndReadFile();
         }
 
         private void ValidateSchool()
