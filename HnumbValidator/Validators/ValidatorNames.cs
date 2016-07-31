@@ -34,8 +34,9 @@ namespace HnumbValidator
                 "emergency",
                 "man_made",
                 "social_facility",
-                "attraction"
-			};
+                "attraction",
+                "military"
+            };
 
         Dictionary<string, string> tags = new Dictionary<string, string>{
                 { "associatedStreet", "type" },
