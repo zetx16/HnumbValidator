@@ -149,7 +149,13 @@ namespace HnumbValidator
 
         static Reports()
         {
-            if ( !File.Exists( Paths.FileReportXml ) )
+            if ( File.Exists( Paths.FileReportXml ) )
+            {
+                File.Move( Paths.FileReportXml, Paths.DirOut + Paths.FileReportXml );
+                File.Delete( Paths.FileReportXml );
+            }
+
+            if ( !File.Exists( Paths.DirOut + Paths.FileReportXml ) )
             {
                 RegionList = new StatRegionList();
                 return;
@@ -157,17 +163,17 @@ namespace HnumbValidator
 
             XmlSerializer formatter = new XmlSerializer( typeof( StatRegionList ) );
 
-            using ( FileStream fs = new FileStream( Paths.FileReportXml, FileMode.OpenOrCreate ) )
+            using ( FileStream fs = new FileStream( Paths.DirOut + Paths.FileReportXml, FileMode.OpenOrCreate ) )
                 RegionList = (StatRegionList)formatter.Deserialize( fs );
 
-            //RegionList.StatRegions.Sort( ( x, y ) => Regions.RegionsDict[x.Region].CompareTo( Regions.RegionsDict[y.Region] ) );
+            RegionList.StatRegions.Sort( ( x, y ) => Regions.RegionsDict[x.Region].CompareTo( Regions.RegionsDict[y.Region] ) );
         }
 
         public static void Save()
         {
             XmlSerializer formatter = new XmlSerializer( typeof( StatRegionList ) );
 
-            using ( FileStream fs = new FileStream( Paths.FileReportXml, FileMode.Create ) )
+            using ( FileStream fs = new FileStream( Paths.DirOut + Paths.FileReportXml, FileMode.Create ) )
                 formatter.Serialize( fs, RegionList );
         }
     }
