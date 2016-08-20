@@ -50,7 +50,10 @@ namespace HnumbValidator
             var count = res.Count();
 
             if ( count < n )
-                res = res.Concat( r.Take( n - count ) );
+            {
+                var addcount = ( n - count ) > firsIndex ? firsIndex : n - count;
+                res = res.Concat( r.Take( addcount ) );
+            }
 
             var result = res.Select( x => x.Region ).ToArray();
 
