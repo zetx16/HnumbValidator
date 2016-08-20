@@ -28,7 +28,7 @@ var markerCluster = new L.MarkerClusterGroup({
 var info = L.control({position: 'bottomright'});
 info.onAdd = function (map) {
 	var div = L.DomUtil.create('div', 'info');
-	div.innerHTML = "<img height=35 width=35 src=info.png>";
+	div.innerHTML = "<img height=35 width=35 src=../icons/info.png>";
 	div.setAttribute("onmouseenter", "showDisclaimer()");
 	div.setAttribute("onmouseleave", "hideDisclaimer()");
 	div.id = 'info';
@@ -39,7 +39,7 @@ info.addTo(map);
 function hideDisclaimer() 
 { 
 	var div = document.getElementById("info"); 
-	div.innerHTML = "<img height=35 width=35 src=info.png>"; 
+	div.innerHTML = "<img height=35 width=35 src=../icons/info.png>"; 
 }
 
 markerCluster.on('clusterclick', function(clickdata){
