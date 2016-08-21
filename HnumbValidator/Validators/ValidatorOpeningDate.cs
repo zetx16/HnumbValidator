@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OsmSharp.Osm;
+using System.Collections;
 
 namespace HnumbValidator
 {
@@ -17,6 +18,12 @@ namespace HnumbValidator
             descriptionForList = "Строящиеся объекты у которых дата открытия прошла.";
             descriptionForMap = descriptionForList;
             errors = new List<Error>();
+        }
+
+        public override IEnumerable GetTableHead()
+        {
+            yield return "Дата открытия";
+            yield return "Доп. информация";
         }
 
         public override void ValidateObject( OsmGeo geo )

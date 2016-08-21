@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OsmSharp.Osm;
+using System.Collections;
 
 namespace HnumbValidator
 {
@@ -28,6 +29,12 @@ namespace HnumbValidator
                 //"addr:neighbourhood",
                 "is_in:neighbourhood"
 			};
+        }
+
+        public override IEnumerable GetTableHead()
+        {
+            yield return "Номер дома";
+            yield return "Доп. информация";
         }
 
         public override void ValidateObject( OsmGeo geo )

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OsmSharp.Osm;
+using System.Collections;
 
 namespace HnumbValidator
 {
@@ -64,6 +65,12 @@ namespace HnumbValidator
             descriptionForMap += ".<br>" + "Например: есть объект с name=\"Школа №2\", но нет тега amenity=school.<br>";
 
             descriptionForList = descriptionForMap + "В колонке с дополнительной информацией перечислены все ключи данного объкта.";
+        }
+
+        public override IEnumerable GetTableHead()
+        {
+            yield return "Название объекта";
+            yield return "Ключи";
         }
 
         public override void ValidateObject(OsmGeo geo)

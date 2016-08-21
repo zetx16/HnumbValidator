@@ -177,8 +177,10 @@ namespace HnumbValidator
                 fw.Write( elements );
                 fw.Write( @"');return false;""><img border=0 width=20 height=20 src=icons/icon_josm_all.png></a>" );
                 fw.Write( @"</td>" );
-                fw.Write( @"<td><b>Ошибка</b></td>" );
-                fw.Write( @"<td><b>Доп. информация</b></td>" );
+                foreach ( var head in validator.GetTableHead() )
+                    fw.Write( @"<td><b>{0}</b></td>", head );
+                fw.WriteLine( @"</tr>" );
+
 
                 int n = 0;
                 foreach ( Error err in validator.Errors )

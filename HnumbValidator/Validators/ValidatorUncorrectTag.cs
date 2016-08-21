@@ -342,6 +342,12 @@ namespace HnumbValidator
             };
         }
 
+        public override IEnumerable GetTableHead()
+        {
+            yield return "Название объекта";
+            yield return "Недостающие теги";
+        }
+
         public override void ValidateObject( OsmGeo geo )
         {
             string value;

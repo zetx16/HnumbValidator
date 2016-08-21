@@ -42,7 +42,7 @@ namespace HnumbValidator
             return directory + region + "." + FileEnd + ".html";
         }
 
-        public IEnumerable GetTableHead()
+        public virtual IEnumerable GetTableHead()
         {
             yield return "Ошибка";
             yield return "Доп. информация";
