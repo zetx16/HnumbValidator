@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OsmSharp.Osm;
+using System.Collections;
 
 namespace HnumbValidator
 {
@@ -191,6 +192,16 @@ namespace HnumbValidator
                     new Dictionary<string,string>{
                         { "office", "government" },
                         { "government", "migration" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "приставов",
+                        "приставы"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "government" },
+                        { "government", "bailiff" }
                     }
                 },
                 {
