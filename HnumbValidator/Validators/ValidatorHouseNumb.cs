@@ -136,7 +136,13 @@ namespace HnumbValidator
                     result += " фл" + fullRes.Groups[ 6 ].Value;
                 }
             }
-            return result;
+
+            result = result.Trim();
+
+            if ( hn != result )
+                return result;
+            else
+                return String.Empty;
         }
     }
 }
