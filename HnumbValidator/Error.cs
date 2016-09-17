@@ -36,8 +36,8 @@ namespace HnumbValidator
         public string Value { get; set; }
         public string Description { get; set; }
 
-        public double lat { get; set; }
-        public double lon { get; set; }
+        public float lat { get; set; }
+        public float lon { get; set; }
 
         public DateTime TimeStump { get; set; }
         public ErrorLevel Level { get; set; }

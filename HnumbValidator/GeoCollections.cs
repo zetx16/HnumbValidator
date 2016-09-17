@@ -41,7 +41,7 @@ namespace HnumbValidator
                     noods.Add( new List<NdCoord>( nodesInOneList ) );
                 try
                 {
-                    noods[ noods.Count - 1 ].Add( new NdCoord( (long)geo.Id, ( (Node)geo ).Coordinate.Latitude, ( (Node)geo ).Coordinate.Longitude ) );
+                    noods[ noods.Count - 1 ].Add( new NdCoord( (long)geo.Id, (float)( (Node)geo ).Coordinate.Latitude, (float)( (Node)geo ).Coordinate.Longitude ) );
                 }
                 catch ( OutOfMemoryException ex )
                 {
@@ -107,8 +107,8 @@ namespace HnumbValidator
         {
             if ( geo.Type == OsmGeoType.Node )
             {
-                res.lat = ( (Node)geo ).Coordinate.Latitude;
-                res.lon = ( (Node)geo ).Coordinate.Longitude;
+                res.lat = (float)( (Node)geo ).Coordinate.Latitude;
+                res.lon = (float)( (Node)geo ).Coordinate.Longitude;
             }
             else if ( geo.Type == OsmGeoType.Way )
             {
@@ -143,7 +143,7 @@ namespace HnumbValidator
                 if ( ndlist[ ndlist.Count - 1 ].id < id )
                     continue;
 
-                int i = ndlist.BinarySearch( new NdCoord( id, 0.0, 0.0 ) );
+                int i = ndlist.BinarySearch( new NdCoord( id ) );
                 if ( i >= 0 )
                 {
                     res.lat = ndlist[ i ].lat;

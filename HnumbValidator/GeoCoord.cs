@@ -10,10 +10,14 @@ namespace HnumbValidator
     public struct NdCoord : IComparable<NdCoord>
     {
         public long id;
-        public double lat;
-        public double lon;
+        public float lat;
+        public float lon;
 
-        public NdCoord( long i, double lt, double ln )
+        public NdCoord( long i ) :
+            this( i, 0.0f, 0.0f )
+        { }
+
+        public NdCoord( long i, float lt, float ln )
         {
             id = i;
             lat = lt;
@@ -23,11 +27,6 @@ namespace HnumbValidator
         public int CompareTo( NdCoord o )
         {
             return id.CompareTo( o.id );
-        }
-
-        public int CompareTo( long oid )
-        {
-            return id.CompareTo( oid );
         }
     }
 
@@ -45,11 +44,6 @@ namespace HnumbValidator
         public int CompareTo( WayCoord o )
         {
             return id.CompareTo( o.id );
-        }
-
-        public int CompareTo( long oid )
-        {
-            return id.CompareTo( oid );
         }
     }
 
@@ -69,11 +63,6 @@ namespace HnumbValidator
         public int CompareTo( RelCoord o )
         {
             return id.CompareTo( o.id );
-        }
-
-        public int CompareTo( long oid )
-        {
-            return id.CompareTo( oid );
         }
     }
 }

@@ -64,7 +64,7 @@ namespace HnumbValidator
 
         private void ValidateSchool()
         {
-            double square = 0.0025;
+            float square = 0.0025f;
             StringComparison nocs = StringComparison.OrdinalIgnoreCase;
 
             tempSchool = tempSchool.OrderBy( x => x.lat ).ToList();
@@ -101,7 +101,7 @@ namespace HnumbValidator
 
         private void ValidateKindergarten()
         {
-            double square = 0.0025;
+            float square = 0.0025f;
             StringComparison nocs = StringComparison.OrdinalIgnoreCase;
             var regex = new Regex( @"[""«](.*?)[""»]", RegexOptions.Compiled );
 
