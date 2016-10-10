@@ -29,33 +29,31 @@ namespace HnumbValidator
         public override void ValidateObject( OsmGeo geo )
         {
             string value;
-            if ( geo.Tags.TryGetValue( "opening_date", out value ) )
+            if ( !geo.Tags.TryGetValue( "opening_date", out value ) )
+                return;
+
+            DateTime opendate;
+            int openyear;
+
+            if ( DateTime.TryParse( value, out opendate ) )
             {
-                DateTime opendate;
-                int openyear;
-
-                if ( DateTime.TryParse( value, out opendate ) )
-                {
-                    if ( opendate <= DateTime.Now )
-                        AddErrorToList( geo, value, "Дата открытия прошла." );
-                    else if ( ( opendate - DateTime.Now ).Days < 7 )
-                        AddErrorToList( geo, value, "До открытия меньше недели." );
-                }
-                else if ( int.TryParse( value, out openyear ) )
-                {
-                    if ( openyear <= DateTime.Now.Year )
-                        AddErrorToList( geo, value, "Дата открытия прошла." );
-                }
-                else
-                    AddErrorToList( geo, value, "Дата не распознана." );
+                if ( opendate <= DateTime.Now )
+                    errors.Add( new Error( geo, value, "Дата открытия прошла." ));
+                else if ( ( opendate - DateTime.Now ).Days < 7 )
+                    errors.Add( new Error( geo, value, "До открытия меньше недели." ));
             }
+            else if ( int.TryParse( value, out openyear ) )
+            {
+                if ( openyear <= DateTime.Now.Year )
+                    errors.Add( new Error( geo, value, "Дата открытия прошла." ));
+            }
+            else
+                errors.Add( new Error( geo, value, "Дата не распознана." ));
         }
-
-        private void AddErrorToList( OsmGeo geo, string value, string description )
+        
+        public override void ValidateEndReadFile()
         {
-            Error err = new Error( geo, value );
-            err.Description = description;
-            errors.Add( err );
+            errors = errors.OrderByDescending( x => x.Value ).ToList();
         }
     }
 }
