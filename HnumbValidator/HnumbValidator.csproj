@@ -77,6 +77,7 @@
     <Compile Include="ReportHtml.cs" />
     <Compile Include="Validators\Validator.cs" />
     <Compile Include="Validators\ValidatorHouseNumb.cs" />
+    <Compile Include="Validators\ValidatorMapsMe.cs" />
     <Compile Include="Validators\ValidatorNormName.cs" />
     <Compile Include="Validators\ValidatorNoStreet.cs" />
     <Compile Include="Validators\ValidatorNames.cs" />

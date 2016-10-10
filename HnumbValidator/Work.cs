@@ -196,6 +196,10 @@ namespace HnumbValidator
             validators.Add( new ValidatorDoubleTag() );
             validators.Add( new ValidatorUncorrectTag() );
             validators.Add( new ValidatorOpeningDate() );
+#if DEBUG
+            validators.Add( new ValidatorNormName() );
+            validators.Add( new ValidatorMapsMe() );
+#endif
             GeoCollections.ClearCollections( pbfile.Length );
 
             using ( FileStream fileStream = pbfile.OpenRead() )
