@@ -48,7 +48,13 @@ namespace HnumbValidator
         public Error( OsmGeo geo, string value ) 
             : this( geo, value, ErrorLevel.Level0 ) { }
 
+        public Error( OsmGeo geo, string value, string description )
+            : this( geo, value, description, ErrorLevel.Level0 ) { }
+
         public Error( OsmGeo geo, string value, ErrorLevel lvl )
+            : this( geo, value, String.Empty, ErrorLevel.Level0 ) { }
+
+        public Error( OsmGeo geo, string value, string description, ErrorLevel lvl )
         {
             Osmid = (long)geo.Id;
             Type = geo.Type;
@@ -57,7 +63,7 @@ namespace HnumbValidator
 
             GeoCollections.GetCoordinates( geo, this );
 
-            Description = String.Empty;
+            Description = description;
             Level = lvl;
         }
 
