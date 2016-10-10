@@ -20,7 +20,20 @@ namespace HnumbValidator
             @"^Лицей-интернат №\d+$",
             @"^Гимназия-интернат №\d+$",
             @"^Татарская гимназия №\d+$",
-            @"^Начальная школа №\d+$"
+            @"^Начальная школа №\d+$",
+            @"^\w+ская школа$"
+        };
+
+        Dictionary<List<string>, string> tags = new Dictionary<List<string>, string>
+        {
+            {
+                new List<string>{
+                    "средняя школа",
+                    "средняя общеобразовательная школа",
+                    "сош"
+                },
+                "Школа"
+            }
         };
 
         public ValidatorNormName()
@@ -52,7 +65,24 @@ namespace HnumbValidator
                 if ( Regex.IsMatch( value, regex ) )
                     return;
 
-            errors.Add( new Error( geo, value ) );
+            var error = new Error( geo, value );
+
+            foreach ( var repl in tags )
+            {
+                if ( value.ToLower().ContainsOneOf( repl.Key ) )
+                {
+                    foreach ( var nocreect in repl.Key )
+                    {
+                        if ( Regex.IsMatch( value.ToLower(), "^" + nocreect ) )
+                            error.Description = value.Remove( 0, nocreect.Length ).Insert( 0, repl.Value );
+                    }
+                }
+            }
+
+            if ( !error.Description.IsEmpty() )
+                error.Level = ErrorLevel.Level5;
+
+            errors.Add( error );
         }
     }
 }
