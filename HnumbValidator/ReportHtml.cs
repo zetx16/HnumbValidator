@@ -31,6 +31,8 @@ namespace HnumbValidator
                 fw.WriteLine( @"<a href=""http://wiki.openstreetmap.org/wiki/RU:Валидаторы"">Другие валидаторы</a>" );
                 fw.Write( @" | " );
                 fw.WriteLine( @"<a href=""download"">Скачать</a>" );
+                fw.Write( @" | " );
+                fw.WriteLine( @"<a href=""https://github.com/zetx16/HnumbValidator"">GitHub</a>" );
                 fw.WriteLine( @"<br>" );
 
                 fw.WriteLine( @"<p class=""description warn"">Не мапьте под валидатор!</p>" );
@@ -143,6 +145,7 @@ namespace HnumbValidator
                 fw.WriteLine( @"<script><!--" );
                 fw.WriteLine( @"function open_josm(x) { document.getElementById('josm').src='http://127.0.0.1:8111/load_object?objects='+x; }" );
                 fw.WriteLine( @"--></script>" );
+                fw.WriteLine( @"<script src=""js/sorttable.js""></script>" );
 
                 string elements = "";
                 bool zapytaya = false;
@@ -168,7 +171,7 @@ namespace HnumbValidator
                     fw.Write( @"<br>" );
 
 
-                fw.WriteLine( @"<table>" );
+                fw.WriteLine( @"<table class=""sortable"">" );
                 fw.Write( @"<tr>" );
                 fw.Write( @"<td>" );
                 fw.Write( @"<a href=""http://127.0.0.1:8111/load_object?objects=" );
@@ -177,6 +180,7 @@ namespace HnumbValidator
                 fw.Write( elements );
                 fw.Write( @"');return false;""><img border=0 width=20 height=20 src=icons/icon_josm_all.png></a>" );
                 fw.Write( @"</td>" );
+                fw.Write( @"<td><b>DateStamp</b></td>" );
                 foreach ( var head in validator.GetTableHead() )
                     fw.Write( @"<td><b>{0}</b></td>", head );
                 fw.WriteLine( @"</tr>" );
@@ -192,6 +196,7 @@ namespace HnumbValidator
                     fw.Write( @"<td><a href=""http://127.0.0.1:8111/load_object?objects={0}{1}"" onClick=""open_josm('{0}{1}');return false;""><img src=icons/icon_to_josm.png></a>"
                         + @"&nbsp;<a href=""http://level0.osmz.ru/?url={0}{1}""><img src=icons/icon_to_level0.png></a></td>",
                         err.TypeStringShort, err.Osmid );
+                    fw.Write( @"<td>{0:yyyy-MM-dd}</td>", err.TimeStump.Date);
                     fw.Write( @"<td><a href=""http://osm.org/{0}/{1}"">{2}</a></td>", 
                         err.TypeString, err.Osmid, err.Value == "" ? "[osm]" : err.Value );
                     fw.Write( @"<td>" + err.Description + @"</td>" );
