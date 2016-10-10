@@ -88,7 +88,9 @@ namespace HnumbValidator
                 },
                 {
                     new List<string>{
-                        "музыкальная школа"
+                        "музыкальная школа",
+                        "муз школа",
+                        "муз. школа"
                     },
                     new Dictionary<string,string>{
                         { "amenity", "training" },
@@ -349,6 +351,30 @@ namespace HnumbValidator
                     new Dictionary<string,string>{
                         { "military", "office" }
                     }
+                },
+                {
+                    new List<string>{
+                        "бти"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "government" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "музей"
+                    },
+                    new Dictionary<string,string>{
+                        { "tourism", "museum" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "сельсовет"
+                    },
+                    new Dictionary<string,string>{
+                        { "amenity", "townhall" }
+                    }
                 }
             };
         }
@@ -374,7 +400,13 @@ namespace HnumbValidator
                         geo.Tags.ContainsKeyValue("public_transport", "stop_position") ||
                         geo.Tags.ContainsKeyValue("type", "route") ||
                         geo.Tags.ContainsKeyValue("type", "route_master") ||
-                        geo.Tags.ContainsKeyValue("type", "public_transport"))
+                        geo.Tags.ContainsKeyValue("type", "public_transport" ) ||
+                        geo.Tags.ContainsKeyValue("type", "boundary" ) ||
+                        ( ( geo.Tags.ContainsKeyValue( "landuse", "construction" ) ||
+                        geo.Tags.ContainsKeyValue( "landuse", "greenfield" ) ||
+                        geo.Tags.ContainsKeyValue( "landuse", "brownfield" ) ) &&
+                        geo.Tags.ContainsKey( "opening_date" ) )
+                        )
                         return;
 
                     var error = new Error( geo, value );
