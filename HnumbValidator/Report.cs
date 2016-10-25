@@ -163,8 +163,16 @@ namespace HnumbValidator
 
             XmlSerializer formatter = new XmlSerializer( typeof( StatRegionList ) );
 
-            using ( FileStream fs = new FileStream( Paths.DirOut + Paths.FileReportXml, FileMode.OpenOrCreate ) )
-                RegionList = (StatRegionList)formatter.Deserialize( fs );
+            try
+            {
+                using ( FileStream fs = new FileStream( Paths.DirOut + Paths.FileReportXml, FileMode.OpenOrCreate ) )
+                    RegionList = (StatRegionList)formatter.Deserialize( fs );
+            }
+            catch
+            {
+                RegionList = new StatRegionList();
+                return;
+            }
 
             RegionList.StatRegions.Sort( ( x, y ) => Regions.RegionsDict[x.Region].CompareTo( Regions.RegionsDict[y.Region] ) );
         }
