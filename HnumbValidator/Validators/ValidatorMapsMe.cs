@@ -19,7 +19,8 @@ namespace HnumbValidator
             @"^кафе(шка)?$",
             @"^т(е|ё|ьо)щ(а|енька)$",
             @"^мама$",
-            @"^(.*)?родители( .*)?$"
+            @"^(.*)?родители( .*)?$",
+            @"^дача$"
         };
 
         public ValidatorMapsMe()
@@ -34,13 +35,41 @@ namespace HnumbValidator
 
         public override void ValidateObject( OsmGeo geo )
         {
+            if ( geo.Tags.ContainsKeyValue( "public_transport", "platform" ) ||
+                geo.Tags.ContainsKeyValue( "highway", "bus_stop" ) ||
+                geo.Tags.ContainsKeyValue( "public_transport", "stop_position" ) ||
+                geo.Tags.ContainsKeyValue( "type", "route" ) ||
+                geo.Tags.ContainsKeyValue( "type", "route_master" ) ||
+                geo.Tags.ContainsKeyValue( "type", "public_transport" ) ||
+                geo.Tags.ContainsKeyValue( "type", "boundary" ) ||
+                ( ( geo.Tags.ContainsKeyValue( "landuse", "construction" ) ||
+                geo.Tags.ContainsKeyValue( "landuse", "greenfield" ) ||
+                geo.Tags.ContainsKeyValue( "landuse", "brownfield" ) ) &&
+                geo.Tags.ContainsKey( "opening_date" ) )
+                )
+                return;
+
             string value;
             if ( !geo.Tags.TryGetValue( "name", out value ) )
                 return;
 
+            bool match = false;
             foreach ( var regex in regs )
-                if ( !Regex.IsMatch( value, regex ) )
+                if ( Regex.IsMatch( value.ToLower(), regex ) )
+                    match = true;
+
+            if ( !match )
+            {
+                if ( !geo.Tags.TryGetValue( "name:ru", out value ) )
                     return;
+
+                foreach ( var regex in regs )
+                    if ( Regex.IsMatch( value.ToLower(), regex ) )
+                        match = true;
+            }
+
+            if ( !match )
+                return;
 
             var error = new Error( geo, value );
 
