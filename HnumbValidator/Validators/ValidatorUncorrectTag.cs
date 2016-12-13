@@ -208,6 +208,41 @@ namespace HnumbValidator
                 },
                 {
                     new List<string>{
+                        "соц защита",
+                        "соц. защита",
+                        "соцзащита",
+                        "соц защиты",
+                        "соц. защиты",
+                        "соцзащиты"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "government" },
+                        { "government", "social_services" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "гос статистик",
+                        "гос. статистик",
+                        "государственная статистик",
+                        "государственной статистик"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "government" },
+                        { "government", "statistics" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "следственный комитет"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "government" },
+                        { "government", "investigation" }
+                    }
+                },
+                {
+                    new List<string>{
                         "нотариус",
                         "нотариальная"
                     },
@@ -375,6 +410,47 @@ namespace HnumbValidator
                     new Dictionary<string,string>{
                         { "amenity", "townhall" }
                     }
+                },
+                {
+                    new List<string>{
+                        "автосервис"
+                    },
+                    new Dictionary<string,string>{
+                        { "shop", "car_repair" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "грузоперевозки"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "logistics" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "автошкола"
+                    },
+                    new Dictionary<string,string>{
+                        { "amenity", "driving_school" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "травмпункт"
+                    },
+                    new Dictionary<string,string>{
+                        { "amenity", "doctors" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "стоматология",
+                        "стоматолог"
+                    },
+                    new Dictionary<string,string>{
+                        { "amenity", "dentist" }
+                    }
                 }
             };
         }
@@ -395,13 +471,14 @@ namespace HnumbValidator
             {
                 if ( value.ToLower().ContainsOneOf( keyvalue.Key ) )
                 {
-                    if (geo.Tags.ContainsKeyValue("public_transport", "platform") ||
-                        geo.Tags.ContainsKeyValue("highway", "bus_stop") ||
-                        geo.Tags.ContainsKeyValue("public_transport", "stop_position") ||
-                        geo.Tags.ContainsKeyValue("type", "route") ||
-                        geo.Tags.ContainsKeyValue("type", "route_master") ||
-                        geo.Tags.ContainsKeyValue("type", "public_transport" ) ||
-                        geo.Tags.ContainsKeyValue("type", "boundary" ) ||
+                    if ( geo.Tags.ContainsKeyValue( "public_transport", "platform" ) ||
+                        geo.Tags.ContainsKeyValue( "highway", "bus_stop" ) ||
+                        geo.Tags.ContainsKeyValue( "public_transport", "stop_position" ) ||
+                        geo.Tags.ContainsKeyValue( "type", "route" ) ||
+                        geo.Tags.ContainsKeyValue( "type", "route_master" ) ||
+                        geo.Tags.ContainsKeyValue( "type", "public_transport" ) ||
+                        geo.Tags.ContainsKeyValue( "type", "boundary" ) ||
+                        geo.Tags.ContainsKeyValue( "landuse", "allotments" ) ||
                         ( ( geo.Tags.ContainsKeyValue( "landuse", "construction" ) ||
                         geo.Tags.ContainsKeyValue( "landuse", "greenfield" ) ||
                         geo.Tags.ContainsKeyValue( "landuse", "brownfield" ) ) &&
