@@ -94,19 +94,12 @@ namespace HnumbValidator
 
             if ( value > 0 )
             {
-                if ( listable && mapable )
-                    result += String.Format( @"<a href=""{0}"">{1}</a> <a href=""{2}"">{3}</a>",
-                        @"map/" + region + "." + file + ".map.html",
-                        iconMap,
-                        region + "." + file + ".html",
-                        value > 0 ? value.ToString() : ""
-                    );
-                if ( !listable && mapable )
-                    result += String.Format( @"<a href=""{0}"">{1} {2}</a>",
-                        @"map/" + region + "." + file + ".map.html",
-                        iconMap,
-                        value > 0 ? value.ToString() : ""
-                    );
+                result += String.Format( @"<a href=""{0}"">{1}</a> <a href=""{2}"">{3}</a>",
+                    @"map/" + region + "." + file + ".map.html",
+                    iconMap,
+                    region + "." + file + ".html",
+                    value > 0 ? value.ToString() : ""
+                );
             }
 
             if ( value == 0 )
@@ -245,7 +238,7 @@ namespace HnumbValidator
                         + @"</div><div class=""popup popup-description"">{4}</div>",
                         err.TypeString,
                         err.Osmid,
-                        err.Value == "" ? "[osm]" : err.Value,
+                        err.Value == "" ? "[osm]" : err.Value.Trim(),
                         err.TypeStringShort,
                         err.Description
                     ).Replace( "\\", "\\\\" ).Replace( "\"", "\\\"" );
