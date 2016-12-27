@@ -178,9 +178,14 @@ namespace HnumbValidator
                 using ( StreamWriter wr = new StreamWriter( "log_speed.txt", true ) )
                     wr.WriteLine( "{0:dd.MM.yyyy}\t{1}\t{2}", DateTime.Now, region, stw.Elapsed );
 #endif
-
-
+                
                 WriteReports( region, file.LastWriteTime );
+
+                Console.CursorLeft = 0;
+                Console.Write( "Upload {0}", region );
+
+                UploadToFtp( region );
+
                 Console.CursorLeft = 0;
                 Console.WriteLine( "Completed {0}", region );
             }
