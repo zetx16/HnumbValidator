@@ -11,6 +11,7 @@ namespace HnumbValidator
     public class ValidatorUncorrectTag : Validator
     {
         Dictionary<List<string>, Dictionary<string, string>> tags;
+        List<KeyValuePair<string, string>> ignoreKeyValues;
 
         public ValidatorUncorrectTag()
         {
@@ -109,7 +110,8 @@ namespace HnumbValidator
                 {
                     new List<string>{
                         "школа",
-                        "сош"
+                        "сош",
+                        "гимназия"
                     },
                     new Dictionary<string,string>{
                         { "amenity", "school" }
@@ -429,10 +431,35 @@ namespace HnumbValidator
                 },
                 {
                     new List<string>{
+                        "почта",
+                        "почтовое"
+                    },
+                    new Dictionary<string,string>{
+                        { "amenity", "post_office" }
+                    }
+                },
+                {
+                    new List<string>{
                         "автошкола"
                     },
                     new Dictionary<string,string>{
                         { "amenity", "driving_school" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "ветеринарная аптека"
+                    },
+                    new Dictionary<string,string>{
+                        { "shop", "pet" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "аптека"
+                    },
+                    new Dictionary<string,string>{
+                        { "amenity", "pharmacy" }
                     }
                 },
                 {
@@ -453,6 +480,19 @@ namespace HnumbValidator
                     }
                 }
             };
+
+            ignoreKeyValues = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>( "public_transport", "platform" ),
+                new KeyValuePair<string, string>( "highway", "bus_stop" ),
+                new KeyValuePair<string, string>( "public_transport", "stop_position" ),
+                new KeyValuePair<string, string>( "type", "route" ),
+                new KeyValuePair<string, string>( "type", "route_master" ),
+                new KeyValuePair<string, string>( "type", "public_transport" ),
+                new KeyValuePair<string, string>( "type", "boundary" ),
+                new KeyValuePair<string, string>( "landuse", "allotments" ),
+                new KeyValuePair<string, string>( "amenity", "parking" )
+            };
         }
 
         public override IEnumerable GetTableHead()
@@ -467,23 +507,11 @@ namespace HnumbValidator
             if ( !geo.Tags.TryGetValue( "name", out value ) )
                 return;
 
-            foreach (var keyvalue in tags)
+            foreach ( var keyvalue in tags )
             {
                 if ( value.ToLower().ContainsOneOf( keyvalue.Key ) )
                 {
-                    if ( geo.Tags.ContainsKeyValue( "public_transport", "platform" ) ||
-                        geo.Tags.ContainsKeyValue( "highway", "bus_stop" ) ||
-                        geo.Tags.ContainsKeyValue( "public_transport", "stop_position" ) ||
-                        geo.Tags.ContainsKeyValue( "type", "route" ) ||
-                        geo.Tags.ContainsKeyValue( "type", "route_master" ) ||
-                        geo.Tags.ContainsKeyValue( "type", "public_transport" ) ||
-                        geo.Tags.ContainsKeyValue( "type", "boundary" ) ||
-                        geo.Tags.ContainsKeyValue( "landuse", "allotments" ) ||
-                        ( ( geo.Tags.ContainsKeyValue( "landuse", "construction" ) ||
-                        geo.Tags.ContainsKeyValue( "landuse", "greenfield" ) ||
-                        geo.Tags.ContainsKeyValue( "landuse", "brownfield" ) ) &&
-                        geo.Tags.ContainsKey( "opening_date" ) )
-                        )
+                    if ( Ignore( geo ) )
                         return;
 
                     var error = new Error( geo, value );
@@ -497,12 +525,26 @@ namespace HnumbValidator
                     return;
                 }
             }
+        }
 
+        private bool Ignore( OsmGeo geo )
+        {
+            foreach ( var ignoreKeyValue in ignoreKeyValues )
+                if ( geo.Tags.ContainsKeyValue( ignoreKeyValue.Key, ignoreKeyValue.Value ) )
+                    return true;
+
+            if ( ( geo.Tags.ContainsKeyValue( "landuse", "construction" ) ||
+                geo.Tags.ContainsKeyValue( "landuse", "greenfield" ) ||
+                geo.Tags.ContainsKeyValue( "landuse", "brownfield" ) ) &&
+                geo.Tags.ContainsKey( "opening_date" ) )
+                return true;
+
+            return false;
         }
 
         public override void ValidateEndReadFile()
         {
-            errors = errors.OrderBy(x => x.Description).ThenByDescending(x => x.TimeStump).ToList();
+            errors = errors.OrderBy( x => x.Description ).ThenByDescending( x => x.TimeStump ).ToList();
         }
     }
 }
