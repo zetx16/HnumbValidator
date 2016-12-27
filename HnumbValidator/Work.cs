@@ -199,6 +199,7 @@ namespace HnumbValidator
 #if DEBUG
             validators.Add( new ValidatorNormName() );
             validators.Add( new ValidatorMapsMe() );
+            validators.Add( new ValidatorNamesTop() );
 #endif
             GeoCollections.ClearCollections( pbfile.Length );
 
