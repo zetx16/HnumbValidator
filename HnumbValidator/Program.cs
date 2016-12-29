@@ -11,11 +11,14 @@ namespace HnumbValidator
         static void Main( string[] args )
         {
             ParseArgs( args );
-            
-            Work p = new Work();
-            p.Validate();
 
-            Console.WriteLine( "Press Enter to exit..." );
+            Work p = new Work();
+            if ( Options.DownloadFromGislab )
+                new WorkAsync( p );
+            else
+                p.Validate();
+
+            //Console.WriteLine( "Press Enter to exit..." );
             //Console.ReadLine();
         }
 

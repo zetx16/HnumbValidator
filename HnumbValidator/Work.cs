@@ -22,7 +22,7 @@ namespace HnumbValidator
                 ReadFiles( Options.Regions );
         }
 
-        private string[] GetDownFiles( int parts )
+        public string[] GetDownFiles( int parts )
         {
             int n;
             var r = Reports.RegionList.StatRegions;
@@ -224,7 +224,7 @@ namespace HnumbValidator
             validators.ForEach( x => x.ValidateEndReadFile() );
         }
 
-        private void WriteReports( string region, DateTime dateDump )
+        public void WriteReports( string region, DateTime dateDump )
         {
             var a = validators.Select( x => new StatValidator( x.GetType().Name, x.Errors.Count ) ).ToList();
             Reports.RegionList.UpdateOrAddRegion( region, dateDump, a );

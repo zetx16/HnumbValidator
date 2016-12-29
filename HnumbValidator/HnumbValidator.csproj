@@ -87,6 +87,7 @@
     <Compile Include="Validators\ValidatorOpeningDate.cs" />
     <Compile Include="Validators\ValidatorUncorrectTag.cs" />
     <Compile Include="Work.cs" />
+    <Compile Include="WorkAsync.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
