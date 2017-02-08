@@ -236,7 +236,7 @@ namespace HnumbValidator
             ReportHtml.SaveIndexList( validators );
         }
 
-        private void UploadToFtp( string region )
+        public void UploadToFtp( string region )
         {
             if ( !Options.UploadToFtp )
                 return;

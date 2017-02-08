@@ -12,11 +12,12 @@ namespace HnumbValidator
         {
             ParseArgs( args );
 
-            Work p = new Work();
+            Work w = new Work();
+            WorkAsync wa = new WorkAsync( w );
             if ( Options.DownloadFromGislab )
-                new WorkAsync( p );
+                wa.Start();
             else
-                p.Validate();
+                w.Validate();
 
             //Console.WriteLine( "Press Enter to exit..." );
             //Console.ReadLine();

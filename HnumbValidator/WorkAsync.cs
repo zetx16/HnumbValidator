@@ -26,6 +26,10 @@ namespace HnumbValidator
 
             toDownload = new Queue<string>( Options.Regions ?? work.GetDownFiles( 5 ) );
             toValidate = new Queue<string>();
+        }
+
+        public void Start()
+        {
             Download().Wait();
             validatingTask.Wait();
         }
@@ -75,7 +79,8 @@ namespace HnumbValidator
             FileInfo file = new FileInfo( Paths.DirIn + region + typefile );
             work.ReadPbfFile( file );
             work.WriteReports( region, file.LastWriteTime );
-            Console.WriteLine( "Validated {0}", region );
+            work.UploadToFtp( region );
+            Console.WriteLine( "Validated  {0}", region );
         }
     }
 }
