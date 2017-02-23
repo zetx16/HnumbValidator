@@ -62,6 +62,19 @@ namespace HnumbValidator
 
                 errors.Add( nostreet );
             }
+
+            string street, place;
+            if ( geo.Tags.TryGetValue( "addr:place", out place ) && geo.Tags.TryGetValue( "addr:street", out street ) )
+            {
+                if ( street == place )
+                    return;
+
+                Error error = new Error( geo, place + " | " + street );
+                error.Description = "Разные addr:place и addr:street";
+                error.Level = ErrorLevel.Level2;
+
+                errors.Add( error );
+            }
         }
 
         public override void ValidateEndReadFile()
