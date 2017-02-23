@@ -191,7 +191,8 @@ namespace HnumbValidator
                 },
                 {
                     new List<string>{
-                        "миграционная"
+                        "миграционная",
+                        "уфмс"
                     },
                     new Dictionary<string,string>{
                         { "office", "government" },
@@ -241,6 +242,27 @@ namespace HnumbValidator
                     new Dictionary<string,string>{
                         { "office", "government" },
                         { "government", "investigation" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "казначейство",
+                        "казначейства"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "government" },
+                        { "government", "treasury" }
+                    }
+                },
+                {
+                    new List<string>{
+                        "госуслуги",
+                        "госуслуг",
+                        "мфц"
+                    },
+                    new Dictionary<string,string>{
+                        { "office", "government" },
+                        { "government", "public_service" }
                     }
                 },
                 {
@@ -305,7 +327,8 @@ namespace HnumbValidator
                 },
                 {
                     new List<string>{
-                        "мэрия"
+                        "мэрия",
+                        "администрация города"
                     },
                     new Dictionary<string,string>{
                         { "amenity", "townhall" }
