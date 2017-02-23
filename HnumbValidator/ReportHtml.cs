@@ -246,9 +246,17 @@ namespace HnumbValidator
                     string icon;
                     switch ( err.Level )
                     {
-                        case ErrorLevel.Level0: icon = "iErr"; break;
-                        case ErrorLevel.Level5: icon = "iWarn"; break;
-                        default: icon = "iErr"; break;
+                        case ErrorLevel.Level0: icon = "i0"; break;
+                        case ErrorLevel.Level1: icon = "i1"; break;
+                        case ErrorLevel.Level2: icon = "i2"; break;
+                        case ErrorLevel.Level3: icon = "i3"; break;
+                        case ErrorLevel.Level4: icon = "i4"; break;
+                        case ErrorLevel.Level5: icon = "i5"; break;
+                        case ErrorLevel.Level6: icon = "i6"; break;
+                        case ErrorLevel.Level7: icon = "i7"; break;
+                        case ErrorLevel.Level8: icon = "i8"; break;
+                        case ErrorLevel.Level9: icon = "i9"; break;
+                        default: icon = "i0"; break;
                     }
 
                     wr.WriteLine( string.Format( @"L.marker([{0}, {1}],{{icon: {4}}}).addTo({2}).bindPopup(""{3}"");",

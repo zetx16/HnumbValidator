@@ -1,3 +1,39 @@
+.icon {
+	border-radius: 50%;
+	line-height: 5px;
+	border: 1px solid #666;
+}
+.icon-level0 {
+	background: #f60;
+}
+.icon-level1 {
+	background: #fff;
+}
+.icon-level2 {
+	background: #ee8;
+}
+.icon-level3 {
+	background: #fff;
+}
+.icon-level4 {
+	background: #fff;
+}
+.icon-level5 {
+	background: orange;
+}
+.icon-level6 {
+	background: #fff;
+}
+.icon-level7 {
+	background: #fff;
+}
+.icon-level8 {
+	background: #fff;
+}
+.icon-level9 {
+	background: #fff;
+}
+
 .icon-err {
 	background:#f60;
 	color:black;
