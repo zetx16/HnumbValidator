@@ -52,7 +52,7 @@ namespace HnumbValidator
             : this( geo, value, description, ErrorLevel.Level0 ) { }
 
         public Error( OsmGeo geo, string value, ErrorLevel lvl )
-            : this( geo, value, String.Empty, ErrorLevel.Level0 ) { }
+            : this( geo, value, String.Empty, lvl ) { }
 
         public Error( OsmGeo geo, string value, string description, ErrorLevel lvl )
         {
