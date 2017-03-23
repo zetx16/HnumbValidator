@@ -37,7 +37,7 @@ namespace HnumbValidator
         {
             if ( geo.Type == OsmGeoType.Node )
             {
-                if ( noods[noods.Count-1].Count == nodesInOneList )
+                if ( noods[ noods.Count - 1 ].Count == nodesInOneList )
                     noods.Add( new List<NdCoord>( nodesInOneList ) );
                 try
                 {
@@ -52,7 +52,14 @@ namespace HnumbValidator
             {
                 try
                 {
-                    ways.Add( new WayCoord( (long)geo.Id, ( (Way)geo ).Nodes[ 0 ] ) );
+                    var way = (Way)geo;
+                    if ( way.Nodes.First() != way.Nodes.Last() )
+                        ways.Add( new WayCoord( (long)geo.Id, way.Nodes[ 0 ] ) );
+                    else
+                    {
+                        var center = GetCenter( way );
+                        ways.Add( new WayCoord( (long)geo.Id, way.Nodes[ 0 ], center.lat, center.lon ) );
+                    }
                 }
                 catch ( OutOfMemoryException ex )
                 {
@@ -112,8 +119,7 @@ namespace HnumbValidator
             }
             else if ( geo.Type == OsmGeoType.Way )
             {
-                long ndid = ( (Way)geo ).Nodes[ 0 ];
-                GetCoordinatesNode( ndid, res );
+                GetCoordinatesWay( (long)geo.Id, res );
             }
             else if ( geo.Type == OsmGeoType.Relation )
             {
@@ -136,6 +142,39 @@ namespace HnumbValidator
                 }
             }
         }
+
+        private static NdCoord GetCenter( Way way )
+        {
+            float slat = 0.0f, slon = 0.0f;
+            int count = 0;
+            foreach ( var node in way.Nodes )
+            {
+                var nd = GetNode( node );
+                if ( nd.id == -1 )
+                    continue;
+                slat += nd.lat;
+                slon += nd.lon;
+                count++;
+            }
+
+            return new NdCoord( 0, slat / count, slon / count );
+        }
+        private static NdCoord GetNode( long id )
+        {
+            foreach ( var ndlist in noods )
+            {
+                if ( ndlist[ ndlist.Count - 1 ].id < id )
+                    continue;
+
+                int i = ndlist.BinarySearch( new NdCoord( id ) );
+                if ( i >= 0 )
+                {
+                    return ndlist[ i ];
+                }
+            }
+            return new NdCoord( -1 );
+        }
+
         private static void GetCoordinatesNode( long id, Error res )
         {
             foreach ( var ndlist in noods )
@@ -153,11 +192,19 @@ namespace HnumbValidator
         }
         private static void GetCoordinatesWay( long id, Error res )
         {
-            int w = ways.BinarySearch( new WayCoord( id, 0 ) );
+            int w = ways.BinarySearch( new WayCoord( id ) );
             if ( w >= 0 )
             {
-                long ndid = ways[ w ].ndId;
-                GetCoordinatesNode( ndid, res );
+                if ( !float.IsNaN( ways[ w ].lat ) )
+                {
+                    res.lat = ways[ w ].lat;
+                    res.lon = ways[ w ].lon;
+                }
+                else
+                {
+                    long ndid = ways[ w ].ndId;
+                    GetCoordinatesNode( ndid, res );
+                }
             }
         }
         private static void GetCoordinatesRel( long id, OsmGeoType type, Error res )

@@ -34,11 +34,31 @@ namespace HnumbValidator
     {
         public long id;
         public long ndId;
+        public float lat;
+        public float lon;
+
+        public WayCoord( long i )
+        {
+            id = i;
+            ndId = 0;
+            lat = float.NaN;
+            lon = float.NaN;
+        }
 
         public WayCoord( long i, long nd )
         {
             id = i;
             ndId = nd;
+            lat = float.NaN;
+            lon = float.NaN;
+        }
+
+        public WayCoord( long i, long nd, float lt, float ln )
+        {
+            id = i;
+            ndId = nd;
+            lat = lt;
+            lon = ln;
         }
 
         public int CompareTo( WayCoord o )
