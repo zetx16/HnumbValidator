@@ -137,19 +137,21 @@ namespace HnumbValidator
 
                 fw.WriteLine( @"<script><!--" );
                 fw.WriteLine( @"function open_josm(x) { document.getElementById('josm').src='http://127.0.0.1:8111/load_object?objects='+x; }" );
+                fw.WriteLine( @"function open_level0(x) { window.open('http://level0.osmz.ru/?url='+x, '_blank'); }" );
+                fw.WriteLine( @"
+function openViaCheckbox() {
+    var inputs = document.getElementsByTagName('input');
+    var inputs = Array.prototype.slice.call(inputs);
+    if(inputs.findIndex((v,i,o)=>v.checked)>=0){
+        return inputs.filter(x=>x.checked).map(x=>x.id).join(',');
+    } else {
+        return inputs.map(x=>x.id).join(',');
+    }
+}");
                 fw.WriteLine( @"--></script>" );
                 fw.WriteLine( @"<script src=""js/sorttable.js""></script>" );
 
-                string elements = "";
-                bool zapytaya = false;
-                foreach ( Error err in validator.Errors )
-                {
-                    if ( zapytaya )
-                        elements += ",";
-                    else
-                        zapytaya = true;
-                    elements += err.TypeStringShort + err.Osmid;
-                }
+                var elements = string.Join(",", validator.Errors.Select(err => err.TypeStringShort + err.Osmid));
 
                 fw.WriteLine( @"<b>{1}</b> | Дата проверки: {0:d MMM yyyy} | Ошибок: {2} | <a href=""{3}"">Карта</a><br>",
                     dateDump,
@@ -166,12 +168,14 @@ namespace HnumbValidator
 
                 fw.WriteLine( @"<table class=""sortable"">" );
                 fw.Write( @"<tr>" );
+                fw.Write( @"<td></td>" );
                 fw.Write( @"<td>" );
                 fw.Write( @"<a href=""http://127.0.0.1:8111/load_object?objects=" );
                 fw.Write( elements );
-                fw.Write( @""" onClick=""open_josm('" );
+                fw.Write( @""" onClick=""open_josm(openViaCheckbox());return false;""><img border=0 width=20 height=20 src=icons/icon_josm_all.png></a>" );
+                fw.Write( @"<a href=""http://level0.osmz.ru/?url=" );
                 fw.Write( elements );
-                fw.Write( @"');return false;""><img border=0 width=20 height=20 src=icons/icon_josm_all.png></a>" );
+                fw.Write( @""" onClick=""open_level0(openViaCheckbox());return false;""><img border=0 width=20 height=20 src=icons/icon_level0_all.png></a>" );
                 fw.Write( @"</td>" );
                 fw.Write( @"<td><b>DateStamp</b></td>" );
                 foreach ( var head in validator.GetTableHead() )
@@ -186,6 +190,7 @@ namespace HnumbValidator
                         fw.Write( @"<tr>" );
                     else
                         fw.Write( @"<tr class=""clr"">" );
+                    fw.Write( @"<td><input type='checkbox' id='{0}{1}'></td>", err.TypeStringShort, err.Osmid );
                     fw.Write( @"<td><a href=""http://127.0.0.1:8111/load_object?objects={0}{1}"" onClick=""open_josm('{0}{1}');return false;""><img src=icons/icon_to_josm.png></a>"
                         + @"&nbsp;<a href=""http://level0.osmz.ru/?url={0}{1}""><img src=icons/icon_to_level0.png></a></td>",
                         err.TypeStringShort, err.Osmid );
